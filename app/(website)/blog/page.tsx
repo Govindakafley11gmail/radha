@@ -1,0 +1,93 @@
+"use client";
+
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import TopNavbar from "@/component/navbar";
+import Navbar from "@/component/website/navbar";
+import NavContent from "@/component/website/NavContent";
+import AboutSection from "@/component/aboutus";
+import ServicesSection from "@/component/website/services";
+import FeaturesSection from "@/component/website/modern_business";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import BlogPosts, { BlogPost, SidebarPost } from "@/component/website/blog";
+export const sampleMainPosts: BlogPost[] = [
+  {
+    id: 1,
+    title: "Lorem ipsum dolor sit amet consectetur adipiscing elit mauris",
+    excerpt: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    category: "TECHNOLOGY",
+    featured: true,
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
+    author: {
+      name: "Marcus Johnson",
+      role: "UI/UX lead",
+      avatar: "https://i.pravatar.cc/150?img=12"
+    },
+    date: "Dec 18, 2024"
+  },
+  {
+    id: 2,
+    title: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse",
+    excerpt: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati.",
+    category: "INNOVATION",
+    featured: true,
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+    author: {
+      name: "Emma Rodriguez",
+      role: "Tech lead",
+      avatar: "https://i.pravatar.cc/150?img=5"
+    },
+    date: "Dec 18, 2024"
+  }
+];
+
+export const sampleSidebarPosts: SidebarPost[] = [
+  {
+    id: 3,
+    title: "Excepteur sint occaecat cupidatat non proident sunt",
+    category: "BUSINESS",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=80",
+    author: "Jessica Nim",
+    date: "Dec 15, 2024"
+  },
+  {
+    id: 4,
+    title: "Voluptate velit esse cillum dolore eu fugiat nulla",
+    category: "MARKETING",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80",
+    author: "David Park",
+    date: "Dec 15, 2024"
+  }
+];
+export default function Blog() {
+  return (
+    <div className="py-12">
+      <div className="container mx-auto px-4 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 pt-10">
+          Blog
+        </h1>
+
+        <p className="max-w-2xl mx-auto mb-4 text-sm text-gray-500">
+          Odit et unde deleniti. Deserunt numquam exercitationem. Officia quo odio sint voluptas
+          consequatur ut a odio voluptatem.
+        </p>
+
+        <div className="border-t border-gray-200 my-4 mx-auto w-16" />
+
+        <Breadcrumb className="justify-center text-gray-500 text-sm">
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/" className="hover:text-gray-900">
+              Home
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <span className="font-medium text-gray-900">Blog</span>
+          </BreadcrumbItem>
+        </Breadcrumb>
+      </div>
+      <BlogPosts mainPosts={sampleMainPosts} sidebarPosts={sampleSidebarPosts} />
+    </div>
+  );
+}

@@ -1,7 +1,8 @@
+import DashboardPage from "@/component/Admin_pannel/home/dashboard";
 import { Home, Grid3X3, FileText, BarChart3, Edit3, Puzzle, MoreHorizontal } from "lucide-react";
 
 export const menuContent: Record<string, React.ReactNode> = {
-  Dashboard: <div className="text-7xl font-bold">Dashboard</div>,
+  Dashboard: <div className="text-xl font-bold"><DashboardPage /></div>,
   Analytics: <div className="text-7xl font-bold">Analytics</div>,
   Reports: <div className="text-7xl font-bold ">Reports</div>,
   "New Project": <div className="text-7xl font-bold">New Project</div>,

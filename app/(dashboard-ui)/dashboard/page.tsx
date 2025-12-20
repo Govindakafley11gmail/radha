@@ -59,16 +59,16 @@ export default function DashboardPage() {
         setActiveMenuItem={setActiveMenuItem}
       />
 
-      <main className="flex-1 overflow-y-auto p-10">
+      <main className="flex-1 overflow-y-auto">
         <TopNavbar theme={theme} setTheme={setTheme} />
 
         <div className="max-w-7xl mx-auto py-5">
-          <h1 className="text-xl font-bold mb-12 opacity-80">
+          <h1 className="text-xl font-bold mb-12 opacity-80 p-5">
             {activeApp} / {activeMenuItem}
           </h1>
 
-          <div className="p-32 min-h-96 flex items-center justify-center backdrop-blur-sm transition-all duration-300">
-            <div className="text-center">
+          <div className="min-h-96 flex m-4 backdrop-blur-sm transition-all duration-300">
+            <div>
               {menuContent[activeMenuItem] || (
                 <p className="text-3xl opacity-50">Select a menu item</p>
               )}
