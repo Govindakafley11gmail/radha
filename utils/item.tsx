@@ -1,131 +1,196 @@
+import PurchaseInvoicePaymentApproval from "@/component/Admin_pannel/approval/purchase-invoice-payment-approval/purchase-invoice-payment-approval";
+import LeaveApplicationComponent from "@/component/Admin_pannel/erp/leave-application/leave-application";
+import LeaveEncashmentComponent from "@/component/Admin_pannel/erp/leave-encashment/leave-encashment";
+import LeaveTypesComponent from "@/component/Admin_pannel/erp/leave-types/leaves-types";
+import PayRollComponent from "@/component/Admin_pannel/erp/payroll/payroll";
 import DashboardPage from "@/component/Admin_pannel/home/dashboard";
-import { Home, Grid3X3, FileText, BarChart3, Edit3, Puzzle, MoreHorizontal } from "lucide-react";
+import TablePage from "@/component/Admin_pannel/home/table";
+import AccountGroupComponent from "@/component/Admin_pannel/master/Account-Group/account-group";
+import AccountTypeComponent from "@/component/Admin_pannel/master/Account-Type/account-type";
+import Branch from "@/component/Admin_pannel/master/Branch/branch";
+import CategoryComponent from "@/component/Admin_pannel/master/category/category";
+import DepartmentComponent from "@/component/Admin_pannel/master/Department/department";
+import RawMaterialComponent from "@/component/Admin_pannel/master/raw-materials/raw-materials";
+import PurchaseInvoiceComponent from "@/component/Admin_pannel/Party/invoice/purchase-invoice";
+import RawMaterialsReceiptComponent from "@/component/Admin_pannel/Party/raw-material-receipt/raw-material-receipt";
+import SupplierComponent from "@/component/Admin_pannel/Party/Supplier/supplier";
+import PurchaseInvoicePaymentComponent from "@/component/Admin_pannel/payments/purchase_invoice_payments/purchase-invoice-payment";
+import Permission from "@/component/Admin_pannel/permission/permission";
+import LabourCostComponent from "@/component/Admin_pannel/production/labour-costs/lobour-costs";
+import LabourComponent from "@/component/Admin_pannel/production/labour/labour";
+import MachinesCostComponent from "@/component/Admin_pannel/production/machines-costs/machine-costs";
+import MachinesComponent from "@/component/Admin_pannel/production/machines/machines";
+import OtherProductionCostComponent from "@/component/Admin_pannel/production/other-production-cost/other-production-cost";
+import ProductUnitCostComponent from "@/component/Admin_pannel/production/product-unit-cost/product-unit-cost";
+import ProductionBatchComponent from "@/component/Admin_pannel/production/production-batch/production-batch";
+import Role from "@/component/Admin_pannel/role/role";
+import Customer from "@/component/Admin_pannel/sales/customer/customer";
+import DiscountSchemeComponent from "@/component/Admin_pannel/sales/return-product/discount-scheme/discount-scheme";
+import PriceListComponent from "@/component/Admin_pannel/sales/return-product/price-list/price-list";
+import SalesReceiptComponent from "@/component/Admin_pannel/sales/sales-receipt/sales-receipt";
+import SalesInvoicesComponent from "@/component/Admin_pannel/sales/sales/sales-invoice";
+import UserDashboard from "@/component/Admin_pannel/User/user";
+import RawMaterialInventoryComponent from "@/component/inventory-management/raw-material-inventory/raw-material-inventory";
+import {
+  Home,
+  Grid3X3,
+  FileText,
+  Edit3,
+  Puzzle,
+  MoreHorizontal,
+  DollarSignIcon,
+} from "lucide-react";
 
 export const menuContent: Record<string, React.ReactNode> = {
-  Dashboard: <div className="text-xl font-bold"><DashboardPage /></div>,
-  Analytics: <div className="text-7xl font-bold">Analytics</div>,
+  Dashboard: (
+    <div className="text-xl font-bold">
+      <DashboardPage />
+    </div>
+  ),
+  "Purchase Invoice Payment Approval": <PurchaseInvoicePaymentApproval />,
   Reports: <div className="text-7xl font-bold ">Reports</div>,
   "New Project": <div className="text-7xl font-bold">New Project</div>,
   "Invite Team": <div className="text-7xl font-bold ">Invite Team</div>,
   Settings: <div className="text-7xl font-bold ">Settings</div>,
-  CRM: <div className="text-7xl font-bold">CRM</div>,
-  "E-Commerce": <div className="text-7xl font-bold">E-Commerce</div>,
-  "Project Manager": <div className="text-7xl font-bold ">Project Manager</div>,
-  "Chat App": <div className="text-7xl font-bold ">Chat App</div>,
-  "API Keys": <div className="text-7xl font-">API Keys</div>,
-  Webhooks: <div className="text-7xl font-bold">Webhooks</div>,
-  Plugins: <div className="text-7xl font-bold ">Plugins</div>,
-  Login: <div className="text-7xl font-bold">Login</div>,
-  Register: <div className="text-7xl font-bold">Register</div>,
-  "Forgot Password": <div className="text-7xl font-bold">Forgot Password</div>,
-  "404 Not Found": <div className="text-9xl font-bold text-red-500">404</div>,
-  "500 Error": <div className="text-9xl font-bold text-red-600">500</div>,
-  Maintenance: <div className="text-7xl font-bold text-yellow-600">Maintenance</div>,
-  "Line Chart": <div className="text-7xl font-bold">Line Chart</div>,
-  "Bar Chart": <div className="text-7xl font-bold">Bar Chart</div>,
-  "Pie Chart": <div className="text-7xl font-bold">Pie Chart</div>,
-  "Area Chart": <div className="text-7xl font-bold">Area Chart</div>,
-  "Basic Table": <div className="text-7xl font-bold">Basic Table</div>,
-  "Data Grid": <div className="text-7xl font-bold">Data Grid</div>,
-  "Editable Table": <div className="text-7xl font-bold">Editable Table</div>,
-  Buttons: <div className="text-7xl font-bold">Buttons</div>,
-  Cards: <div className="text-7xl font-bold">Cards</div>,
-  Modals: <div className="text-7xl font-bold">Modals</div>,
-  Forms: <div className="text-7xl font-bold">Forms</div>,
-  "Drag & Drop": <div className="text-7xl font-bold">Drag & Drop</div>,
-  Charts: <div className="text-7xl font-bold">Charts</div>,
-  Maps: <div className="text-7xl font-bold">Maps</div>,
-  Calendar: <div className="text-7xl font-bold">Calendar</div>,
-};
-export  const mainApps = [
-    { label: "Home", icon: Home },
-    { label: "Applications", icon: Grid3X3 },
-    { label: "Pages", icon: FileText },
-    { label: "Tables Charts", icon: BarChart3 },
-    { label: "Table Form", icon: Edit3 },
-    { label: "UI Collection", icon: Puzzle },
-    { label: "One Level ...", icon: MoreHorizontal },
-  ];
+  User: <UserDashboard />,
+  Permission: <Permission />,
+  Role: <Role />,
+  // "Chat App": <div className="text-7xl font-bold ">Chat App</div>,
+  // "Master": <Master/>,
+  Branch: <Branch />,
+  Department: <DepartmentComponent />,
+  "Account-Group": <AccountGroupComponent />,
+  "Account-Type": <AccountTypeComponent />,
+  Category: <CategoryComponent />,
+  "Raw-Materials": <RawMaterialComponent />,
 
- export const themeConfig = {
-    light: {
-      sidebarBg: "bg-white",
-      headerBg: "bg-white",
-      headerBorder: "border-gray-200",
-      headerText: "text-gray-900",
-      leftPanelBg: "bg-gray-50",
-      rightPanelBg: "bg-white",
-      textPrimary: "text-gray-900",
-      textSecondary: "text-gray-600",
-      hoverBg: "hover:bg-gray-100",
-      activeBg: "bg-blue-100",
-      activeText: "text-blue-700",
-      activeBorder: "border-blue-500",
-      groupTitle: "text-blue-600",
-      groupTitleInactive: "text-gray-500",
-    },
-    dark: {
-      sidebarBg: "bg-gray-900",
-      headerBg: "bg-gray-800",
-      headerBorder: "border-gray-700",
-      headerText: "text-white",
-      leftPanelBg: "bg-gray-900",
-      rightPanelBg: "bg-gray-900",
-      textPrimary: "text-white",
-      textSecondary: "text-gray-400",
-      hoverBg: "hover:bg-gray-800",
-      activeBg: "bg-gray-700",
-      activeText: "text-white",
-      activeBorder: "border-gray-400",
-      groupTitle: "text-gray-300",
-      groupTitleInactive: "text-gray-500",
-    },
-    orange: {
-      sidebarBg: "bg-orange-50",
-      headerBg: "bg-white",
-      headerBorder: "border-orange-200",
-      headerText: "text-orange-900",
-      leftPanelBg: "bg-orange-100",
-      rightPanelBg: "bg-orange-50",
-      textPrimary: "text-orange-900",
-      textSecondary: "text-orange-700",
-      hoverBg: "hover:bg-orange-100",
-      activeBg: "bg-orange-200",
-      activeText: "text-orange-800",
-      activeBorder: "border-orange-500",
-      groupTitle: "text-orange-700",
-      groupTitleInactive: "text-orange-500",
-    },
-    blue: {
-      sidebarBg: "bg-blue-50",
-      headerBg: "bg-white",
-      headerBorder: "border-blue-200",
-      headerText: "text-blue-900",
-      leftPanelBg: "bg-blue-100",
-      rightPanelBg: "bg-blue-50",
-      textPrimary: "text-blue-900",
-      textSecondary: "text-blue-700",
-      hoverBg: "hover:bg-blue-100",
-      activeBg: "bg-blue-200",
-      activeText: "text-blue-800",
-      activeBorder: "border-blue-500",
-      groupTitle: "text-blue-700",
-      groupTitleInactive: "text-blue-500",
-    },
-    green: {
-      sidebarBg: "bg-green-50",
-      headerBg: "bg-white",
-      headerBorder: "border-green-200",
-      headerText: "text-green-900",
-      leftPanelBg: "bg-green-100",
-      rightPanelBg: "bg-green-50",
-      textPrimary: "text-green-900",
-      textSecondary: "text-green-700",
-      hoverBg: "hover:bg-green-100",
-      activeBg: "bg-green-200",
-      activeText: "text-green-800",
-      activeBorder: "border-green-500",
-      groupTitle: "text-green-700",
-      groupTitleInactive: "text-green-500",
-    },
-  };
+  Webhooks: <DepartmentComponent />,
+  Plugins: <div className="text-7xl font-bold ">Plugins</div>,
+  // Supplier: <SupplierComponent />,
+  "Purchase Invoice": <PurchaseInvoiceComponent />,
+  "Raw Materials Receipt": <RawMaterialsReceiptComponent />,
+
+  "Product Unit Cost": <ProductUnitCostComponent />,
+  Maintenance: (
+    <div className="text-7xl font-bold text-yellow-600">Maintenance</div>
+  ),
+  "Purchase Invoice Payment": <PurchaseInvoicePaymentComponent />,
+  "Other Production Cost": <OtherProductionCostComponent />,
+  "Labour Cost": <LabourCostComponent />,
+  Labour: <LabourComponent />,
+  "Machines Cost": <MachinesCostComponent />,
+  Machines: <MachinesComponent />,
+  "Production Batch": <ProductionBatchComponent />,
+  Customer: <Customer />,
+  "Sales Invoices": <SalesInvoicesComponent />,
+  "Sales Receipt": <SalesReceiptComponent />,
+  Forms: <div className="text-7xl font-bold">Forms</div>,
+  "Price List": <PriceListComponent />,
+  "Discount Scheme": <DiscountSchemeComponent />,
+  //ERP
+  "Leave Types": <LeaveTypesComponent />,
+  "Leave Application": <LeaveApplicationComponent />,
+  "Leave Encashment": <LeaveEncashmentComponent />,
+  Payroll: <PayRollComponent />,
+  "Purchase Approval": <PurchaseInvoicePaymentApproval />,
+  //INVENTORY MANAGEMENT
+  "Raw Material Inventory": <RawMaterialInventoryComponent />,
+  //Account Costing
+  "Raw Materials": <RawMaterialComponent />,
+};
+export const mainApps = [
+  { label: "Approval", icon: MoreHorizontal },
+  { label: "Home", icon: Home },
+  { label: "Applications", icon: Grid3X3 },
+  { label: "Accounts Payable", icon: FileText },
+  { label: "Payments", icon: DollarSignIcon },
+  { label: "Sales", icon: Edit3 },
+  { label: "Production Batch", icon: Puzzle },
+  { label: "ERP", icon: Puzzle },
+  { label: "Inventory Management", icon: MoreHorizontal },
+  { label: "Account Costing", icon: MoreHorizontal },
+  { label: "Approval", icon: MoreHorizontal },
+];
+
+export const themeConfig = {
+  light: {
+    sidebarBg: "bg-white",
+    headerBg: "bg-white",
+    headerBorder: "border-gray-200",
+    headerText: "text-gray-900",
+    leftPanelBg: "bg-gray-50",
+    rightPanelBg: "bg-white",
+    textPrimary: "text-gray-900",
+    textSecondary: "text-gray-600",
+    hoverBg: "hover:bg-gray-100",
+    activeBg: "bg-blue-100",
+    activeText: "text-blue-700",
+    activeBorder: "border-blue-500",
+    groupTitle: "text-blue-600",
+    groupTitleInactive: "text-gray-500",
+  },
+  dark: {
+    sidebarBg: "bg-gray-900",
+    headerBg: "bg-gray-800",
+    headerBorder: "border-gray-700",
+    headerText: "text-white",
+    leftPanelBg: "bg-gray-900",
+    rightPanelBg: "bg-gray-900",
+    textPrimary: "text-white",
+    textSecondary: "text-gray-400",
+    hoverBg: "hover:bg-gray-800",
+    activeBg: "bg-gray-700",
+    activeText: "text-white",
+    activeBorder: "border-gray-400",
+    groupTitle: "text-gray-300",
+    groupTitleInactive: "text-gray-500",
+  },
+  orange: {
+    sidebarBg: "bg-orange-50",
+    headerBg: "bg-white",
+    headerBorder: "border-orange-200",
+    headerText: "text-orange-900",
+    leftPanelBg: "bg-orange-100",
+    rightPanelBg: "bg-orange-50",
+    textPrimary: "text-orange-900",
+    textSecondary: "text-orange-700",
+    hoverBg: "hover:bg-orange-100",
+    activeBg: "bg-orange-200",
+    activeText: "text-orange-800",
+    activeBorder: "border-orange-500",
+    groupTitle: "text-orange-700",
+    groupTitleInactive: "text-orange-500",
+  },
+  blue: {
+    sidebarBg: "bg-blue-50",
+    headerBg: "bg-white",
+    headerBorder: "border-blue-200",
+    headerText: "text-blue-900",
+    leftPanelBg: "bg-blue-100",
+    rightPanelBg: "bg-blue-50",
+    textPrimary: "text-blue-900",
+    textSecondary: "text-blue-700",
+    hoverBg: "hover:bg-blue-100",
+    activeBg: "bg-blue-200",
+    activeText: "text-blue-800",
+    activeBorder: "border-blue-500",
+    groupTitle: "text-blue-700",
+    groupTitleInactive: "text-blue-500",
+  },
+  green: {
+    sidebarBg: "bg-green-50",
+    headerBg: "bg-white",
+    headerBorder: "border-green-200",
+    headerText: "text-green-900",
+    leftPanelBg: "bg-green-100",
+    rightPanelBg: "bg-green-50",
+    textPrimary: "text-green-900",
+    textSecondary: "text-green-700",
+    hoverBg: "hover:bg-green-100",
+    activeBg: "bg-green-200",
+    activeText: "text-green-800",
+    activeBorder: "border-green-500",
+    groupTitle: "text-green-700",
+    groupTitleInactive: "text-green-500",
+  },
+};

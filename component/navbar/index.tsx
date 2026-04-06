@@ -1,36 +1,22 @@
 "use client";
-
-import { Bell, Globe, HelpCircle, Search, LogIn, Moon, Sun } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+  Bell,
+  Globe,
+  HelpCircle,
+  Search,
+  Sun,
+  LogOut,
+  Flame,
+  ChevronDown,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const themes = ["light", "dark", "orange", "blue", "green"] as const;
+const themes = ["light", "dark", "orange"] as const;
 type ThemeType = (typeof themes)[number];
-
-const themeIcons: Record<ThemeType, React.ReactNode> = {
-  light: <Sun className="w-4 h-4" />,
-  dark: <Moon className="w-4 h-4" />,
-  orange: <div className="w-4 h-4 rounded-full bg-orange-500" />,
-  blue: <div className="w-4 h-4 rounded-full bg-blue-500" />,
-  green: <div className="w-4 h-4 rounded-full bg-green-500" />,
-};
-
-const themeLabels = {
-  light: "Light",
-  dark: "Dark",
-  orange: "Orange",
-  blue: "Blue",
-  green: "Green",
-};
 
 export default function TopNavbar({
   theme,
@@ -39,73 +25,225 @@ export default function TopNavbar({
   theme: ThemeType;
   setTheme: (theme: ThemeType) => void;
 }) {
+  const { logout } = useAuth();
+  const router = useRouter();
+  const [searchFocused, setSearchFocused] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.replace("/login");
+  };
+
+  const isOrange = theme === "orange";
+  const isDark = theme === "dark";
+
+  /* ── per-theme token maps ── */
+  const glass = isDark
+    ? "bg-zinc-900/70 border-zinc-700/50"
+    : isOrange
+      ? "bg-orange-50/80 border-orange-200/60"
+      : "bg-white border-orange-100";
+
+  const iconCls = isDark
+    ? "text-zinc-400 hover:text-white"
+    : isOrange
+      ? "text-orange-400 hover:text-orange-700"
+      : "text-orange-300 hover:text-orange-600";
+
+  // All themes use orange/amber accent — no blue anywhere
+  const accent = isDark
+    ? "from-orange-600 to-amber-500"
+    : "from-orange-500 to-amber-400";
+
+  const ringColor = "focus-within:ring-orange-400/50";
+
+  const badgeColor = "bg-orange-500";
+
   return (
-    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 flex items-center justify-between sticky top-0 z-50">
-      {/* Left: Utility Icons */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
-        </Button>
+    <>
+      {/* Google Fonts — Syne (display) */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&display=swap');
 
-        <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
-        </Button>
+        .nav-icon-btn {
+          position: relative;
+          display: flex; align-items: center; justify-content: center;
+          width: 38px; height: 38px; border-radius: 10px;
+          transition: background 0.18s, transform 0.15s;
+        }
+        .nav-icon-btn:hover { transform: translateY(-1px); }
+        .nav-icon-btn:active { transform: scale(0.93); }
 
-        <Button variant="ghost" size="icon">
-          <HelpCircle className="h-5 w-5" />
-        </Button>
-      </div>
+        .search-bar {
+          transition: box-shadow 0.25s, width 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        .search-bar.focused { width: 320px; }
 
-      {/* Right Side */}
-      <div className="flex items-center gap-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search UI..."
-            className="pl-10 pr-4 h-10 w-72 bg-muted/50 border-0 focus-visible:ring-1"
-          />
+        .theme-pill {
+          position: relative; overflow: hidden;
+          transition: box-shadow 0.2s, transform 0.15s;
+        }
+        .theme-pill:hover { transform: translateY(-1px); box-shadow: 0 6px 20px -4px rgba(0,0,0,0.18); }
+        .theme-pill:active { transform: scale(0.96); }
+
+        .logout-btn {
+          transition: box-shadow 0.2s, transform 0.15s, opacity 0.15s;
+        }
+        .logout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px -4px rgba(0,0,0,0.22); }
+        .logout-btn:active { transform: scale(0.95); }
+
+        .badge-dot {
+          position: absolute; top: 6px; right: 6px;
+          width: 8px; height: 8px; border-radius: 50%;
+          box-shadow: 0 0 0 2px var(--bg-base, white);
+          animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+          0%,100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.35); opacity: 0.65; }
+        }
+
+        .divider {
+          width: 1px; height: 24px; opacity: 0.25;
+          background: currentColor;
+          margin: 0 4px;
+        }
+      `}</style>
+
+      <header
+        className={`
+          h-16 px-5 flex items-center justify-between sticky top-0 z-50
+          backdrop-blur-xl border-b ${glass}
+          transition-colors duration-300
+        `}
+        style={{ fontFamily: "'Syne', sans-serif" }}
+      >
+        {/* ── LEFT: utility icon cluster ── */}
+        <div className="flex items-center gap-1">
+          {/* Notification */}
+          <button
+            className={`nav-icon-btn ${iconCls} ${isDark ? "hover:bg-zinc-800" : isOrange ? "hover:bg-orange-100" : "hover:bg-orange-50"}`}
+            aria-label="Notifications"
+          >
+            <Bell className="h-[18px] w-[18px]" />
+            <span className={`badge-dot ${badgeColor}`} />
+          </button>
+
+          {/* Globe */}
+          <button
+            className={`nav-icon-btn ${iconCls} ${isDark ? "hover:bg-zinc-800" : isOrange ? "hover:bg-orange-100" : "hover:bg-orange-50"}`}
+            aria-label="Language / Region"
+          >
+            <Globe className="h-[18px] w-[18px]" />
+          </button>
+ 
+          {/* Help */}
+          <button
+            className={`nav-icon-btn ${iconCls} ${isDark ? "hover:bg-zinc-800" : isOrange ? "hover:bg-orange-100" : "hover:bg-orange-50"}`}
+            aria-label="Help"
+          >
+            <HelpCircle className="h-[18px] w-[18px]" />
+          </button>
+
+          <span className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`} />
+
+          {/* Subtle breadcrumb / page context */}
+          <span
+            className={`text-[13px] font-semibold tracking-tight select-none
+              ${isDark ? "text-zinc-300" : isOrange ? "text-orange-800" : "text-orange-500"}`}
+          >
+            Dashboard
+          </span>
         </div>
 
-        {/* Theme Selector - Beautiful Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button  size="sm" className="gap-2">
-              {themeIcons[theme]}
-              <span className="capitalize">{themeLabels[theme]}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>Choose Theme</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {themes.map((t) => (
-              <DropdownMenuItem
-                key={t}
-                onClick={() => setTheme(t)}
-                className="flex items-center gap-3 cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  {themeIcons[t]}
-                  <span className="capitalize font-medium">{themeLabels[t]}</span>
-                </div>
-                {theme === t && (
-                  <Badge variant="secondary" className="ml-auto text-xs">
-                    Active
-                  </Badge>
-                )}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* ── RIGHT: search + controls ── */}
+        <div className="flex items-center gap-3">
 
-        {/* Login Button */}
-        <Button className="gap-2 font-medium">
-          <LogIn className="h-4 w-4" />
-          Log In
-        </Button>
-      </div>
-    </header>
+          {/* Search */}
+          <div
+            className={`
+              search-bar relative flex items-center rounded-xl border px-3 h-9 w-64
+              ${searchFocused ? "focused" : ""}
+              ${glass} ${ringColor}
+              focus-within:ring-2 focus-within:shadow-lg
+              transition-all duration-300
+            `}
+          >
+            <Search
+              className={`h-[15px] w-[15px] mr-2 shrink-0 transition-colors
+                ${isDark ? "text-zinc-500" : isOrange ? "text-orange-400" : "text-orange-300"}
+              `}
+            />
+            <Input
+              type="text"
+              placeholder="Search…"
+              className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-9 w-full text-[13px] placeholder:opacity-50"
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+            />
+            {/* Keyboard hint */}
+            <kbd
+              className={`hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium border ml-2 shrink-0
+                ${isDark ? "border-zinc-700 text-zinc-500 bg-zinc-800" : isOrange ? "border-orange-200 text-orange-400 bg-orange-50" : "border-orange-100 text-orange-400 bg-white"}`}
+            >
+              ⌘K
+            </kbd>
+          </div>
+
+          {/* Theme toggle */}
+          <button
+            className={`
+              theme-pill flex items-center gap-1.5 px-3 h-9 rounded-xl
+              text-[13px] font-semibold tracking-tight border
+              bg-gradient-to-r ${accent}
+              text-white border-transparent shadow-sm
+            `}
+            onClick={() => setTheme(isOrange ? "light" : "orange")}
+            aria-label="Toggle theme"
+          >
+            {isOrange ? (
+              <>
+                <Sun className="w-[15px] h-[15px]" />
+                Light
+              </>
+            ) : (
+              <>
+                <Flame className="w-[15px] h-[15px]" />
+                Orange
+              </>
+            )}
+          </button>
+
+          <span className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`} />
+
+          {/* User / Logout */}
+          <button
+            className={`
+              logout-btn flex items-center gap-2 pl-1 pr-3 h-9 rounded-xl
+              text-[13px] font-semibold tracking-tight border
+              ${isDark
+                ? "bg-zinc-800 border-zinc-700 text-zinc-200 hover:bg-zinc-700"
+                : isOrange
+                  ? "bg-orange-100 border-orange-200 text-orange-800 hover:bg-orange-200"
+                  : "bg-white border-orange-200 text-orange-600 hover:bg-orange-50"
+              }
+            `}
+            onClick={handleLogout}
+          >
+            {/* Avatar placeholder */}
+            <span
+              className={`
+                w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold text-white shrink-0
+                bg-gradient-to-br ${accent}
+              `}
+            >
+              U
+            </span>
+            <span className="hidden sm:inline">Log Out</span>
+            <LogOut className="h-[14px] w-[14px] opacity-60" />
+          </button>
+        </div>
+      </header>
+    </>
   );
 }

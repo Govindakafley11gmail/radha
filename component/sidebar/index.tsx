@@ -3,15 +3,24 @@
 
 import { useState } from "react";
 import {
-  Home, Grid3X3, FileText, BarChart3, Edit3,
-  Package, Users, Settings, ShoppingCart, Zap, Key, Webhook, Plug,
-  LogIn, UserPlus, Lock, AlertCircle, Server, Wrench, TrendingUp,
-  PieChart, AreaChart, Table, MousePointer, CreditCard, Square, FileInput,
-  Move, Map, Calendar, Menu, ChevronLeft, MessageCircle
+  Grid3X3,
+  FileText,
+  Package,
+  Settings,
+  ShoppingCart,
+  Menu,
+  ChevronLeft,
+  Magnet,
+  ChevronDown,
+  ChevronRight,
+  Receipt,
+  Calculator,
+  Workflow,
+  DollarSign,
 } from "lucide-react";
 
-import { mainApps, themeConfig } from "@/utils/item";
 import { Button } from "@/components/ui/button";
+import App from "next/app";
 
 interface SidebarProps {
   theme: string;
@@ -29,204 +38,376 @@ export default function Sidebar({
   setActiveMenuItem,
 }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<string[]>([
+    "Dashboard",
+    "Sales",
+  ]);
 
-  const getMenuGroups = () => {
-    switch (activeApp) {
-      case "Home": return [
-        { title: "OVERVIEW", items: [{ label: "Dashboard", icon: BarChart3 }, { label: "Analytics", icon: Zap }, { label: "Reports", icon: FileText }] },
-        { title: "QUICK ACTIONS", items: [{ label: "New Project", icon: Package }, { label: "Invite Team", icon: Users }, { label: "Settings", icon: Settings }] }
-      ];
-      case "Applications": return [
-        { title: "APPS", items: [{ label: "CRM", icon: Users }, { label: "E-Commerce", icon: ShoppingCart }, { label: "Project Manager", icon: Package }, { label: "Chat App", icon: MessageCircle }] },
-        { title: "INTEGRATIONS", items: [{ label: "API Keys", icon: Key }, { label: "Webhooks", icon: Webhook }, { label: "Plugins", icon: Plug }] }
-      ];
-      case "Pages": return [
-        { title: "AUTHENTICATION", items: [{ label: "Login", icon: LogIn }, { label: "Register", icon: UserPlus }, { label: "Forgot Password", icon: Lock }] },
-        { title: "ERROR PAGES", items: [{ label: "404 Not Found", icon: AlertCircle }, { label: "500 Error", icon: Server }, { label: "Maintenance", icon: Wrench }] }
-      ];
-      case "Tables Charts": return [
-        { title: "CHARTS", items: [{ label: "Line Chart", icon: TrendingUp }, { label: "Bar Chart", icon: BarChart3 }, { label: "Pie Chart", icon: PieChart }, { label: "Area Chart", icon: AreaChart }] },
-        { title: "TABLES", items: [{ label: "Basic Table", icon: Table }, { label: "Data Grid", icon: Grid3X3 }, { label: "Editable Table", icon: Edit3 }] }
-      ];
-      case "UI Collection": return [
-        { title: "COMPONENTS", items: [{ label: "Buttons", icon: MousePointer }, { label: "Cards", icon: CreditCard }, { label: "Modals", icon: Square }, { label: "Forms", icon: FileInput }] },
-        { title: "ADVANCED UI", items: [{ label: "Drag & Drop", icon: Move }, { label: "Charts", icon: BarChart3 }, { label: "Maps", icon: Map }, { label: "Calendar", icon: Calendar }] }
-      ];
-      default: return [
-        { title: "GENERAL", items: [{ label: "Dashboard", icon: Home }, { label: "Profile", icon: Users }, { label: "Settings", icon: Settings }] }
-      ];
-    }
+  const toggleSection = (section: string) => {
+    setExpandedSections((prev) =>
+      prev.includes(section)
+        ? prev.filter((s) => s !== section)
+        : [...prev, section],
+    );
   };
 
-  const menuGroups = getMenuGroups();
-  const t = themeConfig[theme as keyof typeof themeConfig] || themeConfig.blue;
+  // Define sidebar structure similar to the image
+  const sidebarStructure = [
+    {
+      id: "Dashboard",
+      label: "Dashboard",
+      icon: Grid3X3,
+      hasSubmenu: false,
+      onClick: () => {
+        setActiveApp("Home");
+        setActiveMenuItem("Dashboard");
+      },
+    },
+    {
+      id: "Sales",
+      label: "Sales",
+      icon: ShoppingCart,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Customer",
+          onClick: () => {
+            setActiveApp("Sales");
+            setActiveMenuItem("Customer");
+          },
+        },
+        {
+          label: "Sales Invoices",
+          onClick: () => {
+            setActiveApp("Sales");
+            setActiveMenuItem("Sales Invoices");
+          },
+        },
+        {
+          label: "Sales Receipt",
+          onClick: () => {
+            setActiveApp("Sales");
+            setActiveMenuItem("Sales Receipt");
+          },
+        },
+      ],
+    },
+    {
+      id: "Account Costing",
+      label: "Account Costing",
+      icon: Receipt,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Expenses",
+          onClick: () => {
+            setActiveApp("Account Costing");
+            setActiveMenuItem("Expenses");
+          },
+        },
+        {
+          label: "Categories",
+          onClick: () => {
+            setActiveApp("Account Costing");
+            setActiveMenuItem("Raw Materials");
+          },
+        },
+      ],
+    },
+    {
+      id: "Accounting",
+      label: "Accounting",
+      icon: Calculator,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Account Group",
+          onClick: () => {
+            setActiveApp("Applications");
+            setActiveMenuItem("Account-Group");
+          },
+        },
+        {
+          label: "Account Type",
+          onClick: () => {
+            setActiveApp("Applications");
+            setActiveMenuItem("Account-Type");
+          },
+        },
+      ],
+    },
+    {
+      id: "Accounts Payable",
+      label: "Accounts Payable",
+      icon: FileText,
+      hasSubmenu: true,
+      subItems: [
+        // {
+        //   label: "Supplier",
+        //   onClick: () => {
+        //     setActiveApp("Accounts Payable");
+        //     setActiveMenuItem("Supplier");
+        //   },
+        // },
+        {
+          label: "Purchase Invoice",
+          onClick: () => {
+            setActiveApp("Accounts Payable");
+            setActiveMenuItem("Purchase Invoice");
+          },
+        },
+        {
+          label: "Raw Materials Receipt",
+          onClick: () => {
+            setActiveApp("Accounts Payable");
+            setActiveMenuItem("Raw Materials Receipt");
+          },
+        },
+      ],
+    },
+    {
+      id: "Payments",
+      label: "Payments",
+      icon: DollarSign,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Purchase Invoice Payment",
+          onClick: () => {
+            setActiveApp("Payments");
+            setActiveMenuItem("Purchase Invoice Payment");
+          },
+        },
+      ],
+    },
+    {
+      id: "Production Batch",
+      label: "Production Batch",
+      icon: Package,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Production Batch",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Production Batch");
+          },
+        },
+        {
+          label: "Machines",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Machines");
+          },
+        },
+        {
+          label: "Labour",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Labour");
+          },
+        },
+      ],
+    },
+    {
+      id: "Automation",
+      label: "Automation",
+      icon: Workflow,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Workflows",
+          onClick: () => {
+            setActiveApp("Applications");
+            setActiveMenuItem("Workflows");
+          },
+        },
+      ],
+    },
+    {
+      id: "Inventory Management",
+      label: "Inventory Management",
+      icon: Magnet,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Raw Material Inventory",
+          onClick: () => {
+            setActiveApp("Inventory Management");
+            setActiveMenuItem("Raw Material Inventory");
+          },
+        },
+      ],
+    },
+    {
+      id: "ERP",
+      label: "ERP",
+      icon: Settings,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Leave Types",
+          onClick: () => {
+            setActiveApp("ERP");
+            setActiveMenuItem("Leave Types");
+          },
+        },
+        {
+          label: "Leave Application",
+          onClick: () => {
+            setActiveApp("ERP");
+            setActiveMenuItem("Leave Application");
+          },
+        },
+        {
+          label: "Payroll",
+          onClick: () => {
+            setActiveApp("ERP");
+            setActiveMenuItem("Payroll");
+          },
+        },
+      ],
+    },
+     {
+      id: "Approval",
+      label: "Approval",
+      icon: Workflow,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Purchase Approval",
+          onClick: () => {
+            setActiveApp("Approval");
+            setActiveMenuItem("Purchase Approval");
+          },
+        }
+      ],
+    },
+  ];
 
   return (
     <div
       className={`
-        h-screen border-r flex flex-col transition-all duration-300 ease-in-out
-        ${t.sidebarBg} ${isCollapsed ? "w-20" : "w-[420px]"}
+        h-screen  flex flex-col transition-all duration-300 ease-in-out bg-background
+        ${isCollapsed ? "w-20" : "w-64"}
       `}
     >
       {/* Header */}
-      <div className={`h-16 flex items-center justify-between px-6 border-b ${t.headerBg} ${t.headerBorder}`}>
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-            <span className="text-white font-bold text-lg">R</span>
+      <div className="h-16 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded flex items-center justify-center">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-full h-full text-foreground"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                fill="currentColor"
+                opacity="0.2"
+              />
+              <circle cx="12" cy="12" r="6" fill="currentColor" />
+            </svg>
           </div>
-          <span
-            className={`text-xl font-bold ${t.headerText} transition-opacity duration-200 ${
-              isCollapsed ? "opacity-0 w-0" : "opacity-100"
-            }`}
-          >
-            Radha
-          </span>
+          {!isCollapsed && (
+            <span className="text-lg font-semibold text-foreground">
+              LogoIpsum
+            </span>
+          )}
         </div>
 
         <Button
+          variant="ghost"
+          size="icon"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`p-2 rounded-lg ${t.hoverBg} transition-all hover:scale-110`}
+          className="h-8 w-8"
         >
-          {isCollapsed ? <Menu size={20} /> : <ChevronLeft size={20} />}
+          {isCollapsed ? <Menu size={18} /> : <ChevronLeft size={18} />}
         </Button>
       </div>
 
-      {/* Main Content - Always same structure */}
-      <div className="flex-1 overflow-hidden relative">
-        {/* Expanded View */}
-        <div
-          className={`
-            absolute inset-0 grid grid-cols-[140px_1fr] h-full transition-all duration-300 ease-in-out
-            ${isCollapsed ? "opacity-0 pointer-events-none -translate-x-8" : "opacity-100 translate-x-0"}
-          `}
-        >
-          {/* Left Panel: Main Apps */}
-          <div className={`border-r py-8 px-4 ${t.leftPanelBg} overflow-hidden`}>
-            <div className="grid gap-3">
-              {mainApps.map((app) => {
-                const Icon = app.icon;
-                const isActive = activeApp === app.label;
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto py-4">
+        {sidebarStructure.map((section) => {
+          const Icon = section.icon;
+          const isExpanded = expandedSections.includes(section.id);
+          // const isSectionActive = section.subItems?.some(
+          //   (item) => item.label === activeMenuItem,
+          // );
+          const isDirectActive =
+            !section.hasSubmenu && activeMenuItem === section.label;
 
-                return (
-                  <button
-                    key={app.label}
-                    onClick={() => {
-                      setActiveApp(app.label);
-                      if (app.label === "Home") setActiveMenuItem("Dashboard");
-                    }}
-                    className={`
-                      flex flex-col items-center gap-2 p-4 rounded-xl text-xs font-medium transition-all
-                      ${isActive
-                        ? `${t.activeBg} ${t.activeText} shadow-lg ring-2 ring-${t.activeBorder.split("-")[1]}-300/30`
-                        : `${t.textSecondary} ${t.hoverBg} hover:scale-105`
-                      }
-                    `}
-                  >
-                    <Icon size={22} />
-                    <span className="mt-1">{app.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right Panel: Menu Items */}
-          <nav className={`p-8 overflow-y-auto ${t.rightPanelBg}`}>
-            {menuGroups.map((group) => {
-              const hasActive = group.items.some((i) => i.label === activeMenuItem);
-
-              return (
-                <div key={group.title} className="mb-10">
-                  <h3
-                    className={`
-                      mb-5 text-xs font-bold uppercase tracking-widest transition-colors
-                      ${hasActive ? t.groupTitle : t.groupTitleInactive}
-                    `}
-                  >
-                    {group.title}
-                  </h3>
-
-                  <div className="space-y-1">
-                    {group.items.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = activeMenuItem === item.label;
-
-                      return (
-                        <button
-                          key={item.label}
-                          onClick={() => setActiveMenuItem(item.label)}
-                          className={`
-                            w-full flex items-center gap-4 px-5 py-3 rounded-xl text-sm
-                            relative group overflow-hidden transition-all
-                            ${isActive
-                              ? `font-medium ${t.activeBg} ${t.activeText} shadow-md`
-                              : `hover:${t.hoverBg}`
-                            }
-                          `}
-                        >
-                          {/* Active left border */}
-                          <div
-                            className={`
-                              absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition-all
-                              ${isActive ? t.activeBorder : "bg-transparent"}
-                            `}
-                          />
-
-                          {/* Hover background */}
-                          <div className={`absolute inset-0 rounded-xl ${t.hoverBg} opacity-0 group-hover:opacity-100 transition-opacity`} />
-
-                          <Icon
-                            size={19}
-                            className={`relative z-10 transition-colors ${
-                              isActive ? t.activeText : t.textSecondary
-                            }`}
-                          />
-                          <span
-                            className={`relative z-10 flex-1 text-left transition-colors ${
-                              isActive ? t.activeText : t.textPrimary
-                            }`}
-                          >
-                            {item.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Collapsed View - Icons Only */}
-        <div
-          className={`
-            absolute inset-0 flex flex-col items-center pt-12 space-y-8 transition-all duration-300
-            ${isCollapsed ? "opacity-100" : "opacity-0 pointer-events-none"}
-          `}
-        >
-          {mainApps.map((app) => {
-            const Icon = app.icon;
-            const isActive = activeApp === app.label;
-
-            return (
+          return (
+            <div key={section.id} className="mb-1">
+              {/* Main Section Button */}
               <button
-                key={app.label}
                 onClick={() => {
-                  setActiveApp(app.label);
-                  if (app.label === "Home") setActiveMenuItem("Dashboard");
+                  if (section.hasSubmenu) {
+                    toggleSection(section.id);
+                  } else {
+                    section.onClick?.();
+                  }
                 }}
                 className={`
-                  p-3 rounded-xl transition-all hover:scale-110
-                  ${isActive ? `${t.activeBg} shadow-lg` : t.hoverBg}
+                  w-full flex items-center gap-3 px-4 py-2.5 text-sm
+                  transition-colors relative group
+                  ${
+                    isDirectActive
+                      ? "bg-[#e8d5c4] text-[#6b5344] font-medium"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  }
+                  ${isCollapsed ? "justify-center" : ""}
                 `}
               >
-                <Icon size={24} className={isActive ? t.activeText : t.textSecondary} />
+                <Icon size={20} className="flex-shrink-0" />
+                {!isCollapsed && (
+                  <>
+                    <span className="flex-1 text-left">{section.label}</span>
+                    {section.hasSubmenu && (
+                      <span className="ml-auto">
+                        {isExpanded ? (
+                          <ChevronDown size={16} />
+                        ) : (
+                          <ChevronRight size={16} />
+                        )}
+                      </span>
+                    )}
+                  </>
+                )}
               </button>
-            );
-          })}
-        </div>
-      </div>
+
+              {/* Submenu Items */}
+              {section.hasSubmenu && isExpanded && !isCollapsed && (
+                <div className="pl-11 py-1">
+                  {section.subItems?.map((item) => {
+                    const isActive = activeMenuItem === item.label;
+
+                    return (
+                      <button
+                        key={item.label}
+                        onClick={item.onClick}
+                        className={`
+                          w-full text-left px-4 py-2 text-sm rounded-md
+                          transition-colors
+                          ${
+                            isActive
+                              ? "bg-[#e8d5c4] text-[#6b5344] font-medium"
+                              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          }
+                        `}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
     </div>
   );
 }

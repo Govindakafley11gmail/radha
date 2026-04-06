@@ -6,11 +6,11 @@ import { menuContent } from "@/utils/item";
 import TopNavbar from "@/component/navbar";
 
 export default function DashboardPage() {
-  const [theme, setTheme] = useState<"light" | "dark" | "orange" | "blue" | "green">("blue");
+  const [theme, setTheme] = useState<"light" | "dark" | "orange" >("orange");
 
   // Apply theme to <body>
   useEffect(() => {
-    const classes = ["light", "dark", "theme-orange", "theme-blue", "theme-green"];
+    const classes = ["light", "dark", "theme-orange"];
     document.body.classList.remove(...classes);
 
     const themeClass =
@@ -22,7 +22,7 @@ export default function DashboardPage() {
   }, [theme]);
 
   const [activeMenuItem, setActiveMenuItem] = useState("Dashboard");
-  const [activeApp, setActiveApp] = useState("Dashboard");
+  const [activeApp, setActiveApp] = useState("Home");
 
   // Rename this to avoid conflict
   const bodyTheme = useSyncExternalStore(
@@ -41,8 +41,8 @@ export default function DashboardPage() {
 
       if (document.body.classList.contains("dark")) return "dark";
       if (document.body.classList.contains("theme-orange")) return "orange";
-      if (document.body.classList.contains("theme-blue")) return "blue";
-      if (document.body.classList.contains("theme-green")) return "green";
+      // if (document.body.classList.contains("theme-blue")) return "blue";
+      // if (document.body.classList.contains("theme-green")) return "green";
       return "light";
     },
     () => "light"
@@ -68,7 +68,7 @@ export default function DashboardPage() {
           </h1>
 
           <div className="min-h-96 flex m-4 backdrop-blur-sm transition-all duration-300">
-            <div>
+            <div className="flex-1 w-full">
               {menuContent[activeMenuItem] || (
                 <p className="text-3xl opacity-50">Select a menu item</p>
               )}
