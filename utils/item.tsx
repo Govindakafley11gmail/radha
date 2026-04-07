@@ -31,6 +31,7 @@ import SalesReceiptComponent from "@/component/Admin_pannel/sales/sales-receipt/
 import SalesInvoicesComponent from "@/component/Admin_pannel/sales/sales/sales-invoice";
 import UserDashboard from "@/component/Admin_pannel/User/user";
 import RawMaterialInventoryComponent from "@/component/inventory-management/raw-material-inventory/raw-material-inventory";
+import WIPInventoryComponent from "@/component/inventory-management/wip-Inventory/wip-inventory";
 import {
   Home,
   Grid3X3,
@@ -48,10 +49,7 @@ export const menuContent: Record<string, React.ReactNode> = {
     </div>
   ),
   "Purchase Invoice Payment Approval": <PurchaseInvoicePaymentApproval />,
-  Reports: <div className="text-7xl font-bold ">Reports</div>,
-  "New Project": <div className="text-7xl font-bold">New Project</div>,
-  "Invite Team": <div className="text-7xl font-bold ">Invite Team</div>,
-  Settings: <div className="text-7xl font-bold ">Settings</div>,
+  
   User: <UserDashboard />,
   Permission: <Permission />,
   Role: <Role />,
@@ -63,7 +61,6 @@ export const menuContent: Record<string, React.ReactNode> = {
   "Account-Type": <AccountTypeComponent />,
   Category: <CategoryComponent />,
   "Raw-Materials": <RawMaterialComponent />,
-
   Webhooks: <DepartmentComponent />,
   Plugins: <div className="text-7xl font-bold ">Plugins</div>,
   // Supplier: <SupplierComponent />,
@@ -71,9 +68,6 @@ export const menuContent: Record<string, React.ReactNode> = {
   "Raw Materials Receipt": <RawMaterialsReceiptComponent />,
 
   "Product Unit Cost": <ProductUnitCostComponent />,
-  Maintenance: (
-    <div className="text-7xl font-bold text-yellow-600">Maintenance</div>
-  ),
   "Purchase Invoice Payment": <PurchaseInvoicePaymentComponent />,
   "Other Production Cost": <OtherProductionCostComponent />,
   "Labour Cost": <LabourCostComponent />,
@@ -95,10 +89,17 @@ export const menuContent: Record<string, React.ReactNode> = {
   "Purchase Approval": <PurchaseInvoicePaymentApproval />,
   //INVENTORY MANAGEMENT
   "Raw Material Inventory": <RawMaterialInventoryComponent />,
+  "WIP Inventory Component": <WIPInventoryComponent />,
+  // "Re": <div className="text-7xl font-bold">Resource Planning</div>,
   //Account Costing
   "Raw Materials": <RawMaterialComponent />,
+  //Inventory Management
+
+
 };
 export const mainApps = [
+  { label: "Access Management", icon: MoreHorizontal },
+
   { label: "Approval", icon: MoreHorizontal },
   { label: "Home", icon: Home },
   { label: "Applications", icon: Grid3X3 },

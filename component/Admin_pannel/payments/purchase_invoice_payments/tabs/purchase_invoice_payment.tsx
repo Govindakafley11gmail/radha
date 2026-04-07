@@ -30,7 +30,6 @@ export default function PurchaseInvoicesPaymentTab() {
   const { data: PurchaseInvoicePaymentData } = useGetPurchaseInvoicePayment();
   const PurchaseInvoicePaymentGetData =
     PurchaseInvoicePaymentData?.data.data || [];
-    console.log("Final Data Length:", PurchaseInvoicePaymentGetData.length);
   const { searchQuery, setSearchQuery, filteredData } =
     usePurchaseInvoicePayements(PurchaseInvoicePaymentGetData);
   const { mutate: downloadMou, isPending: isDownloading } = useDownloadFile();

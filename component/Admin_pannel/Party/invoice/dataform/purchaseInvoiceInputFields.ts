@@ -47,6 +47,7 @@ export const getDynamicBottomInvoiceForm = (
       name: "taxAmount",
       label: "Tax Amount",
       type: "number",
+      calc: { percentageOf: "total" },
       validation: Yup.number().min(0).required(),
     },
     {

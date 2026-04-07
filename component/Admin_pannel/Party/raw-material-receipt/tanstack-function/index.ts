@@ -49,8 +49,8 @@ export const useRawMaterialReceiptMutations = (options?: MutationOptions) => {
     FormData
   >({
     mutationFn: createRawMaterialReceipt,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["RawMaterialReceipt-list"] });
+    onSuccess: async(data) => {
+      await queryClient.invalidateQueries({ queryKey: ["PuchaseInvoice-list"] });
       options?.onSuccess?.(data);
     },
     onError: (error) => {

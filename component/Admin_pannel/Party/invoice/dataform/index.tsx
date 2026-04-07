@@ -7,21 +7,19 @@ const countryOptions = [
   { label: "Completed", value: "completed" },
   { label: "Cancelled", value: "cancelled" },
 ];
- const MaterTypesOption = [
+const MaterTypesOption = [
   { label: "New", value: "NEW" },
   { label: "old", value: "OLD" },
   { label: "Other", value: "OTHER" },
   // { label: "Australia", value: "AU" },
 ];
 export const TopInvoiceForms: FieldConfig[] = [
-
   {
     name: "invoiceNo",
     label: "Invoice #",
     type: "text",
     validation: Yup.string().required("Invoice number is required"),
   },
-  
 
   {
     name: "invoiceDate",
@@ -33,8 +31,8 @@ export const TopInvoiceForms: FieldConfig[] = [
     name: "freightCost",
     label: "Freight Cost",
     type: "number",
-    calc: { sum: ["freightCost"] }, // <-- sum of all bottom row freightCost
-
+    calc: { sum: ["freightCost"] },
+    disabled: true,
     validation: Yup.number().required("Freight Cost is required"),
   },
   {
@@ -42,11 +40,14 @@ export const TopInvoiceForms: FieldConfig[] = [
     label: "GST Tax Amount",
     type: "number",
     calc: { sum: ["taxAmount"] },
+    disabled: true,
     validation: Yup.number().required("GST Tax Amount is required"),
   },
   {
     name: "importDuty",
     label: "Import Duty",
+    disabled: true,
+
     type: "number",
     validation: Yup.number().required("Import Duty is required"),
   },
@@ -54,6 +55,8 @@ export const TopInvoiceForms: FieldConfig[] = [
     name: "totalAmount",
     label: "Total Amount",
     type: "number",
+    disabled: true,
+
     calc: { sum: ["total"] }, // sum of all row-level `total` fields
     validation: Yup.number().required("Total Amount is required"),
   },
@@ -69,10 +72,10 @@ export const TopInvoiceForms: FieldConfig[] = [
     type: "select",
     options: countryOptions,
   },
-   {
-      name: "materialTypes",
-      label: "material Types",
-      type: "select",
-      options: MaterTypesOption,
-    },
+  {
+    name: "materialTypes",
+    label: "material Types",
+    type: "select",
+    options: MaterTypesOption,
+  },
 ];

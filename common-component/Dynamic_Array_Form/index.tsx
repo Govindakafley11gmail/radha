@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -9,7 +10,6 @@ import {
   Form,
   useFormikContext,
   getIn,
-  FieldProps,
   useField,
 } from "formik";
 import * as Yup from "yup";
@@ -32,7 +32,7 @@ export interface FieldConfig {
   type: FieldType;
   options?: { label: string; value: string | number }[];
   validation?: any;
-  storeLabel?: boolean; // store {value, label} instead of just value
+  storeLabel?: boolean;
   calc?: {
     multiply?: string[];
     sum?: string[];
@@ -52,13 +52,21 @@ interface DynamicArrayFormProps {
   buttonTitle: string;
 }
 
+// ─────────────────────────────────────────────
+//  SHARED FIELD STYLES  (one source of truth)
+// ─────────────────────────────────────────────
+const FIELD_BASE =
+  "h-11 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm text-gray-800 " +
+  "placeholder:text-gray-400 transition-colors duration-150 " +
+  "focus:outline-none focus:ring-2 focus:ring-orange-500 " +
+  "disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:md:text-base  disabled:text-gray-900";
+
 // -------------------- Formik Select Field --------------------
 interface FormikSelectFieldProps {
   name: string;
   options: { label: string; value: any }[];
   storeLabel?: boolean;
   placeholder?: string;
-  className?: string;
 }
 
 function FormikSelectField({
@@ -66,7 +74,6 @@ function FormikSelectField({
   options,
   storeLabel = false,
   placeholder,
-  className = "",
 }: FormikSelectFieldProps) {
   const { values, setFieldValue, setFieldTouched } = useFormikContext<any>();
   const fieldValue = getIn(values, name);
@@ -76,12 +83,11 @@ function FormikSelectField({
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = options.find(
-      (opt) => String(opt.value) === e.target.value,
+      (opt) => String(opt.value) === e.target.value
     );
     if (!selectedOption) return;
-
     setFieldValue(name, storeLabel ? selectedOption : selectedOption.value);
-    setFieldTouched(name, true, true); // mark as touched for validation
+    setFieldTouched(name, true, true);
   };
 
   return (
@@ -90,7 +96,7 @@ function FormikSelectField({
         name={name}
         value={currentValue}
         onChange={handleChange}
-        className={`h-12 w-full bg-white border-2 border-gray-200 rounded-xl px-4 pr-10 text-gray-900 transition-all duration-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 focus:outline-none appearance-none cursor-pointer ${className}`}
+        className={`${FIELD_BASE} appearance-none pr-9 cursor-pointer`}
       >
         <option value="">{placeholder || "Select an option"}</option>
         {options.map((opt) => (
@@ -100,22 +106,18 @@ function FormikSelectField({
         ))}
       </select>
 
-      {/* Custom arrow */}
-      <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+      {/* Chevron icon */}
+      <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
         <svg
-          className="w-5 h-5 text-gray-400"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
-      </div>
+      </span>
     </div>
   );
 }
@@ -142,32 +144,29 @@ function ItemsTotalWatcher({
         if (field.calc.multiply) {
           const product = field.calc.multiply.reduce(
             (acc, key) => acc * (Number(item[key]) || 0),
-            1,
+            1
           );
-          if (item[field.name] !== product) {
+          if (item[field.name] !== product)
             setFieldValue(`${arrayFieldName}.${index}.${field.name}`, product);
-          }
         }
 
         if (field.calc.sum) {
           const sum = field.calc.sum.reduce(
             (acc, key) => acc + (Number(item[key]) || 0),
-            0,
+            0
           );
-          if (item[field.name] !== sum) {
+          if (item[field.name] !== sum)
             setFieldValue(`${arrayFieldName}.${index}.${field.name}`, sum);
-          }
         }
 
         if (field.calc.percentageOf) {
           const base = Number(item[field.calc.percentageOf]) || 0;
           const percentValue = base * 0.05;
-          if (item[field.name] !== percentValue) {
+          if (item[field.name] !== percentValue)
             setFieldValue(
               `${arrayFieldName}.${index}.${field.name}`,
-              percentValue,
+              percentValue
             );
-          }
         }
       });
     });
@@ -177,13 +176,11 @@ function ItemsTotalWatcher({
       const total = values[arrayFieldName].reduce((acc: number, item: any) => {
         const rowSum = field.calc!.sum!.reduce(
           (rowAcc, key) => rowAcc + (Number(item[key]) || 0),
-          0,
+          0
         );
         return acc + rowSum;
       }, 0);
-      if (values[field.name] !== total) {
-        setFieldValue(field.name, total);
-      }
+      if (values[field.name] !== total) setFieldValue(field.name, total);
     });
   }, [values, setFieldValue, arrayFieldName, arrayFields, topFields]);
 
@@ -209,23 +206,17 @@ function DateDiffWatcher() {
       setFieldValue("total_days", 0);
       return;
     }
+    if (end < start) { setFieldValue("total_days", 0); return; }
 
-    if (end < start) {
-      setFieldValue("total_days", 0);
-      return;
-    }
-
-    const diffTime = end.getTime() - start.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
+    const diffDays =
+      Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     if (values.total_days !== diffDays) setFieldValue("total_days", diffDays);
   }, [values.start_date, values.end_date, setFieldValue]);
 
   return null;
 }
-// file Upload
-// Add this component near the other field components
 
+// -------------------- File Upload Field --------------------
 function FileUploadField({ name }: { name: string }) {
   const { setFieldValue } = useFormikContext<any>();
   const [meta] = useField(name);
@@ -234,27 +225,33 @@ function FileUploadField({ name }: { name: string }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (!file) return;
-
-    setFieldValue(name, file); // stores the actual File object
-
-    // Preview for images
+    setFieldValue(name, file);
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
     } else {
-      setPreview(null); // non-image: just show filename
+      setPreview(null);
     }
   };
 
+  const hasFile = meta.value instanceof File;
+
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <label
         htmlFor={name}
-        className="cursor-pointer flex items-center gap-2 border-2 border-dashed border-orange-300 rounded-xl px-4 py-3 text-sm text-gray-500 hover:border-orange-500 hover:text-orange-600 transition"
+        className={
+          /* Same h-11 height + border as every other field */
+          "h-11 w-full flex items-center gap-2 px-3 rounded-lg border border-dashed " +
+          "border-gray-300 bg-white text-sm cursor-pointer transition-colors duration-150 " +
+          "hover:border-orange-500 hover:bg-orange-50 " +
+          (hasFile ? "text-gray-700" : "text-gray-400")
+        }
       >
+        {/* Upload icon */}
         <svg
-          className="w-5 h-5"
+          className={`w-4 h-4 shrink-0 ${hasFile ? "text-orange-500" : "text-gray-400"}`}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -266,10 +263,11 @@ function FileUploadField({ name }: { name: string }) {
             d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0L8 8m4-4l4 4"
           />
         </svg>
-        {meta.value instanceof File
-          ? meta.value.name
-          : "Click to upload (image, PDF, doc…)"}
+        <span className="truncate">
+          {hasFile ? (meta.value as File).name : "Upload file…"}
+        </span>
       </label>
+
       <input
         id={name}
         type="file"
@@ -277,11 +275,12 @@ function FileUploadField({ name }: { name: string }) {
         onChange={handleChange}
         className="hidden"
       />
+
       {preview && (
         <img
           src={preview}
           alt="preview"
-          className="mt-2 h-20 w-auto rounded-lg object-contain border"
+          className="mt-1 h-16 w-auto rounded-md object-contain border border-gray-200"
         />
       )}
     </div>
@@ -290,15 +289,171 @@ function FileUploadField({ name }: { name: string }) {
 
 // -------------------- Default value helper --------------------
 function getDefaultValue(type: FieldType): string | number {
-  switch (type) {
-    case "number":
-      return 0;
-    case "text":
-    case "date":
-    case "select":
-    default:
-      return "";
+  return type === "number" ? 0 : "";
+}
+
+// -------------------- Error message --------------------
+function FieldError({ name }: { name: string }) {
+  const { errors, touched } = useFormikContext<any>();
+  const error = getIn(errors, name);
+  const touch = getIn(touched, name);
+  if (!touch || !error) return null;
+  return <p className="mt-0.5 text-xs text-red-500">{String(error)}</p>;
+}
+
+// -------------------- Label --------------------
+function FieldLabel({ label }: { label: string }) {
+  return (
+    <label className="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">
+      {label}
+    </label>
+  );
+}
+
+// -------------------- Modern Textarea --------------------
+function ModernTextarea({ name }: { name: string }) {
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<any>();
+  const value: string = getIn(values, name) ?? "";
+  const MAX = 500;
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const next = e.target.value;
+    if (next.length <= MAX) {
+      setFieldValue(name, next);
+      setFieldTouched(name, true, false);
+    }
+  };
+
+  const pct = Math.round((value.length / MAX) * 100);
+  const circumference = 2 * Math.PI * 7; // r=7
+  const dash = (pct / 100) * circumference;
+  const ringColor =
+    pct >= 90 ? "#ef4444" : pct >= 70 ? "#f97316" : "#22c55e";
+
+  return (
+    <div className="group relative">
+      {/* Glow border wrapper */}
+      <div
+        className={
+          "relative rounded-xl border border-gray-200 bg-white shadow-sm " +
+          "transition-all duration-200 " +
+          "focus:outline-none focus:ring-2 focus:ring-orange-500 group-focus-within:ring-2 group-focus-within:ring-orange-500"
+        }
+      >
+        {/* Textarea */}
+        <textarea
+          name={name}
+          value={value}
+          onChange={handleChange}
+          rows={4}
+          placeholder="Start typing…"
+          className={
+            "w-full resize-none rounded-xl bg-transparent px-4 pt-3 pb-8 " +
+            "text-sm text-gray-800 placeholder:text-gray-400 " +
+            "focus:outline-none leading-relaxed"
+          }
+        />
+
+        {/* Bottom bar: char count pill + ring */}
+        <div className="absolute bottom-2.5 left-4 right-3 flex items-center justify-between pointer-events-none">
+          {/* Remaining characters pill */}
+          <span
+            className={`text-[10px] font-medium px-2 py-0.5 rounded-full transition-colors duration-200 ${
+              pct >= 90
+                ? "bg-red-50 text-red-500"
+                : pct >= 70
+                ? "bg-orange-50 text-orange-500"
+                : "bg-gray-100 text-gray-400"
+            }`}
+          >
+            {MAX - value.length} left
+          </span>
+
+          {/* SVG ring progress */}
+          <svg width="20" height="20" viewBox="0 0 20 20" className="-rotate-90">
+            {/* Track */}
+            <circle
+              cx="10" cy="10" r="7"
+              fill="none"
+              stroke="#e5e7eb"
+              strokeWidth="2.5"
+            />
+            {/* Progress */}
+            <circle
+              cx="10" cy="10" r="7"
+              fill="none"
+              stroke={ringColor}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeDasharray={`${dash} ${circumference}`}
+              style={{ transition: "stroke-dasharray 0.3s ease, stroke 0.3s ease" }}
+            />
+          </svg>
+        </div>
+      </div>
+
+      <FieldError name={name} />
+    </div>
+  );
+}
+
+// -------------------- Render one field --------------------
+function RenderField({
+  field,
+  fieldName,
+  onValuesChange,
+}: {
+  field: FieldConfig;
+  fieldName: string; // may be `arrayKey.0.fieldName` or just `fieldName`
+  onValuesChange?: (values: Record<string, any>) => void;
+}) {
+  if (field.type === "select") {
+    return (
+      <>
+        <FormikSelectField
+          name={fieldName}
+          options={field.options || []}
+          storeLabel={field.storeLabel}
+          placeholder={`Select ${field.label}`}
+        />
+        <FieldError name={fieldName} />
+      </>
+    );
   }
+
+  if (field.type === "textarea") {
+    return <ModernTextarea name={fieldName} />;
+  }
+
+  if (field.type === "file" || field.type === "image") {
+    return (
+      <>
+        <FileUploadField name={fieldName} />
+        <FieldError name={fieldName} />
+      </>
+    );
+  }
+
+  // text | number | date
+  return (
+    <>
+      <Field name={fieldName}>
+        {({ field: f }: any) => (
+          <Input
+            {...f}
+            type={field.type}
+            disabled={field.disabled}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              f.onChange(e);
+              onValuesChange?.({});
+            }}
+            className={FIELD_BASE}
+          />
+        )}
+      </Field>
+      <FieldError name={fieldName} />
+    </>
+  );
 }
 
 // -------------------- DynamicArrayForm --------------------
@@ -314,27 +469,20 @@ export default function DynamicArrayForm({
 }: DynamicArrayFormProps) {
   const arrayFieldKey = arrayFieldName;
 
-  // top-level defaults
   const topFieldDefaults = topFields.reduce(
     (acc, field) => {
-      acc[field.name] =
-        initialValues[field.name] ?? getDefaultValue(field.type);
+      acc[field.name] = initialValues[field.name] ?? getDefaultValue(field.type);
       return acc;
     },
-    {} as Record<string, any>,
+    {} as Record<string, any>
   );
 
-  // array item defaults
   const arrayItemDefaults = arrayFields.reduce(
-    (acc, f) => ({
-      ...acc,
-      [f.name]: getDefaultValue(f.type),
-    }),
-    {},
+    (acc, f) => ({ ...acc, [f.name]: getDefaultValue(f.type) }),
+    {}
   );
 
-  const initialArray =
-    arrayFields && arrayFields.length > 0 ? [arrayItemDefaults] : [];
+  const initialArray = arrayFields.length > 0 ? [arrayItemDefaults] : [];
 
   const initialFormValues = {
     ...topFieldDefaults,
@@ -353,38 +501,28 @@ export default function DynamicArrayForm({
   };
 
   const validationSchema = useMemo(() => {
-    const topFieldSchema = topFields.reduce(
-      (acc, field) => {
-        if (field.validation) acc[field.name] = field.validation;
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
+    const topFieldSchema = topFields.reduce((acc, f) => {
+      if (f.validation) acc[f.name] = f.validation;
+      return acc;
+    }, {} as Record<string, any>);
 
-    const arrayFieldSchema = arrayFields.reduce(
-      (acc, field) => {
-        if (field.validation) acc[field.name] = field.validation;
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
+    const arrayFieldSchema = arrayFields.reduce((acc, f) => {
+      if (f.validation) acc[f.name] = f.validation;
+      return acc;
+    }, {} as Record<string, any>);
 
     return Yup.object().shape({
       ...topFieldSchema,
       ...(arrayFieldKey
-        ? {
-            [arrayFieldKey]: Yup.array().of(
-              Yup.object().shape(arrayFieldSchema),
-            ),
-          }
+        ? { [arrayFieldKey]: Yup.array().of(Yup.object().shape(arrayFieldSchema)) }
         : {}),
     });
   }, [topFields, arrayFields, arrayFieldKey]);
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-md">
+    <div className="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       {title && (
-        <h2 className="text-xl md:text-2xl font-bold text-orange-600 mb-4">
+        <h2 className="text-xl md:text-2xl font-bold text-orange-600 mb-6">
           {title}
         </h2>
       )}
@@ -395,74 +533,19 @@ export default function DynamicArrayForm({
         onSubmit={onSubmit}
         enableReinitialize
       >
-        {({ values, errors, touched }) => (
+        {({ values }) => (
           <Form className="space-y-6">
-            {/* ---------------- Top-level fields ---------------- */}
+            {/* ── Top-level fields ── */}
             {topFields.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-4">
                 {topFields.map((field) => (
-                  <div key={field.name} className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-500 mb-1">
-                      {field.label}
-                    </label>
-                    {field.type === "select" ? (
-                      <>
-                        <FormikSelectField
-                          name={field.name}
-                          options={field.options || []}
-                          storeLabel={field.storeLabel}
-                          placeholder={`Select ${field.label}`}
-                        />
-                        {getIn(touched, field.name) &&
-                          getIn(errors, field.name) && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {String(getIn(errors, field.name))}
-                            </div>
-                          )}
-                      </>
-                    ) : field.type === "textarea" ? (
-                      <>
-                        <Field
-                          name={field.name}
-                          as="textarea"
-                          className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-orange-500"
-                        />
-                        {getIn(touched, field.name) &&
-                          getIn(errors, field.name) && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {String(getIn(errors, field.name))}
-                            </div>
-                          )}
-                      </>
-                    ) : field.type === "file" || field.type === "image" ? (
-                      <>
-                        <>
-                          <FileUploadField name={field.name} />
-                          {getIn(touched, field.name) &&
-                            getIn(errors, field.name) && (
-                              <div className="text-red-500 text-sm mt-1">
-                                {String(getIn(errors, field.name))}
-                              </div>
-                            )}
-                        </>
-                      </>
-                    ) : (
-                      <>
-                        <Field
-                          name={field.name}
-                          type={field.type}
-                          as={Input}
-                          onValuesChange={onValuesChange}
-                          className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-orange-500"
-                        />
-                        {getIn(touched, field.name) &&
-                          getIn(errors, field.name) && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {String(getIn(errors, field.name))}
-                            </div>
-                          )}
-                      </>
-                    )}
+                  <div key={field.name}>
+                    <FieldLabel label={field.label} />
+                    <RenderField
+                      field={field}
+                      fieldName={field.name}
+                      onValuesChange={onValuesChange}
+                    />
                   </div>
                 ))}
               </div>
@@ -475,98 +558,57 @@ export default function DynamicArrayForm({
               topFields={topFields}
             />
 
-            {/* ---------------- Dynamic array fields ---------------- */}
+            {/* ── Dynamic array fields ── */}
             {arrayFields.length > 0 && arrayFieldKey && (
               <FieldArray name={arrayFieldKey}>
                 {({ push, remove }) => (
-                  <div className="space-y-6">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                      Enter Items
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                      Items
                     </h3>
 
                     {values[arrayFieldKey].map((_: any, index: number) => (
                       <div
                         key={index}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border border-gray-200 rounded-xl shadow-sm transition-shadow hover:shadow-md"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
                       >
                         {arrayFields.map((field) => (
-                          <div key={field.name} className="flex flex-col">
-                            <label className="text-sm font-medium text-gray-500 mb-1">
-                              {field.label}
-                            </label>
-                            {field.type === "select" ? (
-                              <>
-                                <FormikSelectField
-                                  name={`${arrayFieldKey}.${index}.${field.name}`}
-                                  options={field.options || []}
-                                  storeLabel={field.storeLabel}
-                                  placeholder={`Select ${field.label}`}
-                                />
-                                {getIn(
-                                  touched,
-                                  `${arrayFieldKey}.${index}.${field.name}`,
-                                ) &&
-                                  getIn(
-                                    errors,
-                                    `${arrayFieldKey}.${index}.${field.name}`,
-                                  ) && (
-                                    <div className="text-red-500 text-sm mt-1">
-                                      {String(
-                                        getIn(
-                                          errors,
-                                          `${arrayFieldKey}.${index}.${field.name}`,
-                                        ),
-                                      )}
-                                    </div>
-                                  )}
-                              </>
-                            ) : (
-                              <>
-                                <Field
-                                  name={`${arrayFieldKey}.${index}.${field.name}`}
-                                  type={field.type}
-                                  as={Input}
-                                  className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                />
-                                {getIn(
-                                  touched,
-                                  `${arrayFieldKey}.${index}.${field.name}`,
-                                ) &&
-                                  getIn(
-                                    errors,
-                                    `${arrayFieldKey}.${index}.${field.name}`,
-                                  ) && (
-                                    <div className="text-red-500 text-sm mt-1">
-                                      {String(
-                                        getIn(
-                                          errors,
-                                          `${arrayFieldKey}.${index}.${field.name}`,
-                                        ),
-                                      )}
-                                    </div>
-                                  )}
-                              </>
-                            )}
+                          <div key={field.name}>
+                            <FieldLabel label={field.label} />
+                            <RenderField
+                              field={field}
+                              fieldName={`${arrayFieldKey}.${index}.${field.name}`}
+                            />
                           </div>
                         ))}
 
-                        {/* Add / Remove Buttons */}
-                        <div className="flex mt-5 justify-center items-center gap-2 col-span-full">
-                          <Button
+                        {/* Row action buttons */}
+                        <div className="col-span-full flex items-center gap-2 pt-1">
+                          <button
                             type="button"
                             onClick={() => push(arrayItemDefaults)}
-                            className="w-10 h-10 flex items-center justify-center rounded-full bg-orange-500 text-white hover:ring-2 hover:ring-orange-500 transition"
+                            className={
+                              "h-8 w-8 flex items-center justify-center rounded-full " +
+                              "bg-orange-500 text-white text-lg font-medium leading-none " +
+                              "hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300 transition"
+                            }
+                            aria-label="Add row"
                           >
                             +
-                          </Button>
+                          </button>
                           {values[arrayFieldKey].length > 1 && (
-                            <Button
+                            <button
                               type="button"
                               onClick={() => remove(index)}
-                              className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 hover:ring-2 hover:ring-orange-500 transition"
+                              className={
+                                "h-8 w-8 flex items-center justify-center rounded-full " +
+                                "bg-red-500 text-white text-lg font-medium leading-none " +
+                                "hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition"
+                              }
+                              aria-label="Remove row"
                             >
-                              -
-                            </Button>
+                              −
+                            </button>
                           )}
                         </div>
                       </div>
@@ -576,7 +618,14 @@ export default function DynamicArrayForm({
               </FieldArray>
             )}
 
-            <Button type="submit" className="mt-4 bg-orange-500 text-white">
+            {/* Submit */}
+            <Button
+              type="submit"
+              className={
+                "h-11 px-6 rounded-lg bg-orange-500 text-white text-sm font-semibold " +
+                "hover:bg-orange-600 focus:ring-2 focus:ring-orange-300 focus:outline-none transition"
+              }
+            >
               {buttonTitle}
             </Button>
           </Form>

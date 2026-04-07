@@ -6,7 +6,7 @@ import { menuContent } from "@/utils/item";
 import TopNavbar from "@/component/navbar";
 
 export default function DashboardPage() {
-  const [theme, setTheme] = useState<"light" | "dark" | "orange" >("orange");
+  const [theme, setTheme] = useState<"light" | "dark" | "orange" >("light");
 
   // Apply theme to <body>
   useEffect(() => {

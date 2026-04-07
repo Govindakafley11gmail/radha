@@ -17,6 +17,7 @@ import {
   Calculator,
   Workflow,
   DollarSign,
+  User,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,35 @@ export default function Sidebar({
       },
     },
     {
+      id: "User Management",
+      label: "Access Management",
+      icon: User,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "User",
+          onClick: () => {
+            setActiveApp("Access Management");
+            setActiveMenuItem("User");
+          },
+        },
+        {
+          label: "Roles",
+          onClick: () => {
+            setActiveApp("Access Management");
+            setActiveMenuItem("Role");
+          },
+        },
+        {
+          label: "Permission",
+          onClick: () => {
+            setActiveApp("Access Management");
+            setActiveMenuItem("Permission");
+          },
+        },
+      ],
+    },
+    {
       id: "Sales",
       label: "Sales",
       icon: ShoppingCart,
@@ -88,6 +118,13 @@ export default function Sidebar({
           onClick: () => {
             setActiveApp("Sales");
             setActiveMenuItem("Sales Receipt");
+          },
+        },
+          {
+          label: "Discount Scheme",
+          onClick: () => {
+            setActiveApp("Sales");
+            setActiveMenuItem("Discount Scheme");
           },
         },
       ],
@@ -200,11 +237,26 @@ export default function Sidebar({
             setActiveMenuItem("Machines");
           },
         },
+
         {
           label: "Labour",
           onClick: () => {
             setActiveApp("Production Batch");
             setActiveMenuItem("Labour");
+          },
+        },
+        {
+          label: "Product Unit Cost",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Product Unit Cost"); // ✅ FIXED
+          },
+        },
+         {
+          label: "Other Production Cost",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Other Production Cost"); // ✅ FIXED
           },
         },
       ],
@@ -235,6 +287,13 @@ export default function Sidebar({
           onClick: () => {
             setActiveApp("Inventory Management");
             setActiveMenuItem("Raw Material Inventory");
+          },
+        },
+            {
+          label: "WIP Inventory Component",
+          onClick: () => {
+            setActiveApp("Inventory Management");
+            setActiveMenuItem("WIP Inventory Component");
           },
         },
       ],
@@ -268,7 +327,7 @@ export default function Sidebar({
         },
       ],
     },
-     {
+    {
       id: "Approval",
       label: "Approval",
       icon: Workflow,
@@ -280,7 +339,7 @@ export default function Sidebar({
             setActiveApp("Approval");
             setActiveMenuItem("Purchase Approval");
           },
-        }
+        },
       ],
     },
   ];

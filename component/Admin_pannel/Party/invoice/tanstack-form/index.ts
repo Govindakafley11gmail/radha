@@ -54,8 +54,11 @@ export const usePuchaseInvoiceMutations = (options?: MutationOptions) => {
 }
 
 const getSuppliers = async (): Promise<PurchaseInvoiceFetchResponse> => {
-  const response = await apiClient.get(API_RADDHA_URL.purchaseInvoice);
-
+const response = await apiClient.get(API_RADDHA_URL.purchaseInvoice, {
+  params: {
+    status: "under_process",
+  },
+});
   if (response.data?.success === false) {
     throw { data: response.data };
   }

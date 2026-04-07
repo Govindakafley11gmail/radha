@@ -57,8 +57,8 @@ export const usePaymnetMutations = (options?: MutationOptions) => {
     PaymentRecieptSendData
   >({
     mutationFn: createPayment,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["PurchaseInvoice-list"] });
+    onSuccess: async(data) => {
+      await queryClient.invalidateQueries({ queryKey: ["purchase-invoice-payment"] });
       options?.onSuccess?.(data);
     },
     onError: (error) => {

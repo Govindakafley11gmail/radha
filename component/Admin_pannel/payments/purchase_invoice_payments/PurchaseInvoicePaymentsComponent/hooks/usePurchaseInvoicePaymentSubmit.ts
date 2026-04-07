@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { showToast } from "nextjs-toast-notify";
-import type { PaymentRecieptSendData } from "../../interface";
+import type {
+  PaymentRecieptSendData,
+  SupplierandInvoiceDataAttributes,
+} from "../../interface";
 import { usePaymnetMutations } from "../../tanstack-function";
 import { useCallback } from "react";
 import { buildPaymentPayload } from "../utils/PaymentData";
 
 export function usePurchaseInvoicePaymentSubmit(
-  selectedRow: PaymentRecieptSendData | null,
+  selectedRow: SupplierandInvoiceDataAttributes | null,
   onSuccessClose?: () => void,
 ) {
   const { createPaymentReceipt } = usePaymnetMutations({
@@ -27,12 +30,14 @@ export function usePurchaseInvoicePaymentSubmit(
   const handleSubmit = useCallback(
     (values: Record<string, any>) => {
       if (!selectedRow?.id) {
-        showToast.error("Please select a supplier first");
         return;
       }
 
-      const payload = buildPaymentPayload(selectedRow.id, values);
-
+      const payload = buildPaymentPayload(
+        selectedRow.invoice.id,
+        selectedRow.id, // ✅ payment UUID
+        values,
+      );
       createPaymentReceipt(payload as PaymentRecieptSendData);
     },
     [selectedRow, createPaymentReceipt],
