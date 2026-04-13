@@ -60,6 +60,7 @@ export default function WIPInventoryDialog({
       onSubmit={onSubmit}
       OnSubmitTitle={editingData ? "Update" : "Create"}
       defaultValues={defaultValues}
+      CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1"
     />
   );
 }

@@ -11,6 +11,7 @@ import AboutSection from "@/component/aboutus";
 import ServicesSection from "@/component/website/services";
 import FeaturesSection from "@/component/website/modern_business";
 import BlogPosts, { BlogPost, SidebarPost } from "@/component/website/blog";
+import Footer from "@/component/footer/footer";
 export const sampleMainPosts: BlogPost[] = [
   {
     id: 1,
@@ -83,6 +84,7 @@ export default function HomeHero() {
       <ServicesSection />
       <FeaturesSection />
       <BlogPosts mainPosts={sampleMainPosts} sidebarPosts={sampleSidebarPosts} />
+      <Footer/>
     </div>
   );
 }

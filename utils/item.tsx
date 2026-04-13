@@ -1,8 +1,10 @@
+import FixedAssetsApprovalComponent from "@/component/Admin_pannel/approval/fixed-assets-approval/fixed-assets-approval";
 import PurchaseInvoicePaymentApproval from "@/component/Admin_pannel/approval/purchase-invoice-payment-approval/purchase-invoice-payment-approval";
 import LeaveApplicationComponent from "@/component/Admin_pannel/erp/leave-application/leave-application";
 import LeaveEncashmentComponent from "@/component/Admin_pannel/erp/leave-encashment/leave-encashment";
 import LeaveTypesComponent from "@/component/Admin_pannel/erp/leave-types/leaves-types";
 import PayRollComponent from "@/component/Admin_pannel/erp/payroll/payroll";
+import FixedAssetsComponent from "@/component/Admin_pannel/fixed-assets/assets/fixed-assets";
 import DashboardPage from "@/component/Admin_pannel/home/dashboard";
 import TablePage from "@/component/Admin_pannel/home/table";
 import AccountGroupComponent from "@/component/Admin_pannel/master/Account-Group/account-group";
@@ -14,6 +16,7 @@ import RawMaterialComponent from "@/component/Admin_pannel/master/raw-materials/
 import PurchaseInvoiceComponent from "@/component/Admin_pannel/Party/invoice/purchase-invoice";
 import RawMaterialsReceiptComponent from "@/component/Admin_pannel/Party/raw-material-receipt/raw-material-receipt";
 import SupplierComponent from "@/component/Admin_pannel/Party/Supplier/supplier";
+import FixedAssetsPaymentComponent from "@/component/Admin_pannel/payments/fixed-asstes/fixed-assets-payment";
 import PurchaseInvoicePaymentComponent from "@/component/Admin_pannel/payments/purchase_invoice_payments/purchase-invoice-payment";
 import Permission from "@/component/Admin_pannel/permission/permission";
 import LabourCostComponent from "@/component/Admin_pannel/production/labour-costs/lobour-costs";
@@ -49,24 +52,19 @@ export const menuContent: Record<string, React.ReactNode> = {
     </div>
   ),
   "Purchase Invoice Payment Approval": <PurchaseInvoicePaymentApproval />,
-  
+  "Fixed Assets Payment":<FixedAssetsPaymentComponent/>,
   User: <UserDashboard />,
   Permission: <Permission />,
   Role: <Role />,
-  // "Chat App": <div className="text-7xl font-bold ">Chat App</div>,
-  // "Master": <Master/>,
   Branch: <Branch />,
   Department: <DepartmentComponent />,
-  "Account-Group": <AccountGroupComponent />,
-  "Account-Type": <AccountTypeComponent />,
+  "Account Group": <AccountGroupComponent />,
+  "Account Type": <AccountTypeComponent />,
   Category: <CategoryComponent />,
   "Raw-Materials": <RawMaterialComponent />,
   Webhooks: <DepartmentComponent />,
-  Plugins: <div className="text-7xl font-bold ">Plugins</div>,
-  // Supplier: <SupplierComponent />,
   "Purchase Invoice": <PurchaseInvoiceComponent />,
   "Raw Materials Receipt": <RawMaterialsReceiptComponent />,
-
   "Product Unit Cost": <ProductUnitCostComponent />,
   "Purchase Invoice Payment": <PurchaseInvoicePaymentComponent />,
   "Other Production Cost": <OtherProductionCostComponent />,
@@ -87,19 +85,17 @@ export const menuContent: Record<string, React.ReactNode> = {
   "Leave Encashment": <LeaveEncashmentComponent />,
   Payroll: <PayRollComponent />,
   "Purchase Approval": <PurchaseInvoicePaymentApproval />,
+  "Fixed Assets approval":<FixedAssetsApprovalComponent/>,
   //INVENTORY MANAGEMENT
   "Raw Material Inventory": <RawMaterialInventoryComponent />,
   "WIP Inventory Component": <WIPInventoryComponent />,
-  // "Re": <div className="text-7xl font-bold">Resource Planning</div>,
   //Account Costing
-  "Raw Materials": <RawMaterialComponent />,
-  //Inventory Management
-
-
+  Categories: <RawMaterialComponent />,
+  //Assets  "Fixed Assets": <div className="text-7xl font-bold">Fixed Assets</div>,
+  "Fixed Assets": <FixedAssetsComponent />,
 };
 export const mainApps = [
   { label: "Access Management", icon: MoreHorizontal },
-
   { label: "Approval", icon: MoreHorizontal },
   { label: "Home", icon: Home },
   { label: "Applications", icon: Grid3X3 },
@@ -109,8 +105,9 @@ export const mainApps = [
   { label: "Production Batch", icon: Puzzle },
   { label: "ERP", icon: Puzzle },
   { label: "Inventory Management", icon: MoreHorizontal },
-  { label: "Account Costing", icon: MoreHorizontal },
+  { label: "Master", icon: MoreHorizontal },
   { label: "Approval", icon: MoreHorizontal },
+  { label: "Assets", icon: DollarSignIcon },
 ];
 
 export const themeConfig = {

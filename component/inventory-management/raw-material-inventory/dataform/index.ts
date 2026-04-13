@@ -4,7 +4,7 @@ import * as Yup from "yup";
 const   ValuationMethodOptions = [
   { label: "FIFO", value: "FIFO" },
   { label: "LIFO", value: "LIFO" },
-  { label: "Weighted Average", value: "Weighted Average" },
+  { label: "WAC", value: "WAC" },
 ];
 
 export const RawMaterialInventoryFields = (

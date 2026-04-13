@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { VerticalModalForm } from "@/component/ModalForm";
-import { DisplayForm } from "@/common-component/DisplayFormForm";
-import DynamicArrayForm from "@/common-component/Dynamic_Array_Form";
+
 
 
 

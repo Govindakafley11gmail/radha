@@ -255,8 +255,7 @@ export default function Role() {
         defaultValues={dialogDefaultValues}
         onSubmit={handleSubmit}
         OnSubmitTitle={editingRole ? "Update Role" : "Create Role"}
-        CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1
-"
+        CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1"
       />
 
       {/* Data Table */}

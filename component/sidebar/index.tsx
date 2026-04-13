@@ -1,6 +1,5 @@
 // app/components/Sidebar.tsx
 "use client";
-
 import { useState } from "react";
 import {
   Grid3X3,
@@ -14,14 +13,11 @@ import {
   ChevronDown,
   ChevronRight,
   Receipt,
-  Calculator,
   Workflow,
   DollarSign,
   User,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-import App from "next/app";
 
 interface SidebarProps {
   theme: string;
@@ -32,8 +28,6 @@ interface SidebarProps {
 }
 
 export default function Sidebar({
-  theme,
-  activeApp,
   setActiveApp,
   activeMenuItem,
   setActiveMenuItem,
@@ -130,62 +124,56 @@ export default function Sidebar({
       ],
     },
     {
-      id: "Account Costing",
-      label: "Account Costing",
+      id: "Master",
+      label: "Master",
       icon: Receipt,
       hasSubmenu: true,
       subItems: [
-        {
-          label: "Expenses",
+         {
+          label: "Branch",
           onClick: () => {
-            setActiveApp("Account Costing");
-            setActiveMenuItem("Expenses");
+            setActiveApp("Master");
+            setActiveMenuItem("Branch");
+          },
+        },
+          {
+          label: "Department",
+          onClick: () => {
+            setActiveApp("Master");
+            setActiveMenuItem("Department");
           },
         },
         {
           label: "Categories",
           onClick: () => {
-            setActiveApp("Account Costing");
-            setActiveMenuItem("Raw Materials");
+            setActiveApp("Master");
+            setActiveMenuItem("Categories");
           },
         },
-      ],
-    },
-    {
-      id: "Accounting",
-      label: "Accounting",
-      icon: Calculator,
-      hasSubmenu: true,
-      subItems: [
         {
           label: "Account Group",
           onClick: () => {
-            setActiveApp("Applications");
-            setActiveMenuItem("Account-Group");
+            setActiveApp("Master");
+            setActiveMenuItem("Account Group");
           },
         },
         {
           label: "Account Type",
           onClick: () => {
-            setActiveApp("Applications");
-            setActiveMenuItem("Account-Type");
+            setActiveApp("Master");
+            setActiveMenuItem("Account Type");
           },
         },
       ],
     },
+  
     {
       id: "Accounts Payable",
       label: "Accounts Payable",
       icon: FileText,
       hasSubmenu: true,
       subItems: [
-        // {
-        //   label: "Supplier",
-        //   onClick: () => {
-        //     setActiveApp("Accounts Payable");
-        //     setActiveMenuItem("Supplier");
-        //   },
-        // },
+    
         {
           label: "Purchase Invoice",
           onClick: () => {
@@ -213,6 +201,13 @@ export default function Sidebar({
           onClick: () => {
             setActiveApp("Payments");
             setActiveMenuItem("Purchase Invoice Payment");
+          },
+        },
+            {
+          label: "Fixed Assets Payment",
+          onClick: () => {
+            setActiveApp("Payments");
+            setActiveMenuItem("Fixed Assets Payment");
           },
         },
       ],
@@ -262,21 +257,6 @@ export default function Sidebar({
       ],
     },
     {
-      id: "Automation",
-      label: "Automation",
-      icon: Workflow,
-      hasSubmenu: true,
-      subItems: [
-        {
-          label: "Workflows",
-          onClick: () => {
-            setActiveApp("Applications");
-            setActiveMenuItem("Workflows");
-          },
-        },
-      ],
-    },
-    {
       id: "Inventory Management",
       label: "Inventory Management",
       icon: Magnet,
@@ -319,6 +299,13 @@ export default function Sidebar({
           },
         },
         {
+          label: "Leave Encashment",
+          onClick: () => {
+            setActiveApp("ERP");
+            setActiveMenuItem("Leave Encashment");
+          },
+        },
+            {
           label: "Payroll",
           onClick: () => {
             setActiveApp("ERP");
@@ -338,6 +325,28 @@ export default function Sidebar({
           onClick: () => {
             setActiveApp("Approval");
             setActiveMenuItem("Purchase Approval");
+          },
+        },
+          {
+          label: "Fixed Assets approval",
+          onClick: () => {
+            setActiveApp("Approval");
+            setActiveMenuItem("Fixed Assets approval");
+          },
+        },
+      ],
+    },
+        {
+      id: "Assets",
+      label: "Assets",
+      icon: Workflow,
+      hasSubmenu: true,
+      subItems: [
+        {
+          label: "Fixed Assets",
+          onClick: () => {
+            setActiveApp("Assets");
+            setActiveMenuItem("Fixed Assets");
           },
         },
       ],

@@ -27,6 +27,7 @@ export default function InvoiceForm({
       topFields={TopInvoiceForms}
       arrayFieldName="details"
       arrayFields={dynamicBottomInvoiceForm}
+      topContainerClassName="grid grid-cols-2 md:grid-cols-8 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
       initialValues={{
         invoiceNo: "",
         invoiceDate: "",

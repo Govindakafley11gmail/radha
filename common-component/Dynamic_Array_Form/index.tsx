@@ -50,6 +50,7 @@ interface DynamicArrayFormProps {
   onValuesChange?: (values: Record<string, any>) => void;
   onSubmit: (values: Record<string, any>) => void;
   buttonTitle: string;
+  topContainerClassName?: string;
 }
 
 // ─────────────────────────────────────────────
@@ -466,6 +467,7 @@ export default function DynamicArrayForm({
   buttonTitle,
   onSubmit,
   onValuesChange,
+  topContainerClassName,
 }: DynamicArrayFormProps) {
   const arrayFieldKey = arrayFieldName;
 
@@ -570,7 +572,7 @@ export default function DynamicArrayForm({
                     {values[arrayFieldKey].map((_: any, index: number) => (
                       <div
                         key={index}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
+                        className={topContainerClassName }
                       >
                         {arrayFields.map((field) => (
                           <div key={field.name}>

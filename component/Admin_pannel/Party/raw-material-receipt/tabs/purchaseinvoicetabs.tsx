@@ -88,6 +88,8 @@ export default function PurchaseInvoicesTab() {
         {selectedRow && <SupplierDetails data={selectedRow.supplier as any} />}
 
         <DynamicArrayForm
+                    topContainerClassName="grid grid-cols-2 md:grid-cols-7 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
+
           title="Invoice Form"
           topFields={TopMaterialsFieldsForms}
           initialValues={{

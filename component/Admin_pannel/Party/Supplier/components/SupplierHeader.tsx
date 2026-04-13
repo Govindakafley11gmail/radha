@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
 type Props = {
-  buttonTitle:string;
+  buttonTitle?:string;
   searchQuery: string;
   setSearchQuery: (val: string) => void;
-  onCreate: () => void;
+  onCreate?: () => void;
 };
 
 export default function SupplierHeader({
@@ -30,9 +30,9 @@ export default function SupplierHeader({
         />
       </div>
 
-      <Button onClick={onCreate} className="bg-orange-500 text-white hover:bg-orange-600 h-12 px-6 rounded-md shadow-md">
+    { buttonTitle && <Button onClick={onCreate} className="bg-orange-500 text-white hover:bg-orange-600 h-12 px-6 rounded-md shadow-md">
         {buttonTitle}
-      </Button>
+      </Button>}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import SupplierHeader from "@/component/Admin_pannel/Party/Supplier/components/S
 import WIPInventoryDialog from "./component/wip-inventory-dialogbox";
 import {
   WIPInventoryData,
+  type WIPInventoryPostDataAttributes,
 } from "./interface";
 import { useWIPInventoryActions } from "./hooks/wip-inventory-actions";
 import { showToast } from "nextjs-toast-notify";
@@ -18,16 +19,14 @@ export default function WIPInventoryComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingWIPInventory, setEditingWIPInventory] =
     useState<WIPInventoryData | null>(null);
-  const [selected, setSelected] = useState<WIPInventoryData[]>([]);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
-  // ✅ Fetch
-  const { data, isLoading } = useGetWIPInventory();
-  // ✅ Correct API structure
+
+  const { data } = useGetWIPInventory();
   const wipInventoryList = data?.data || [];
-  // ✅ Search/filter
+
   const { searchQuery, setSearchQuery, filteredData } =
     useWIPInventoryTable(wipInventoryList);
-  // ✅ Mutations
+
   const { createWIPInventory, updateWIPInventory, deleteWIPInventory } =
     useWIPInventoryMutations({
       onSuccess: (data) => {
@@ -38,68 +37,86 @@ export default function WIPInventoryComponent() {
         showToast.error(error?.data?.message || "Error");
       },
     });
-  // ✅ Actions
+
+  // ✅ MAIN EDIT LOGIC (THIS IS KEY)
+  const handleEdit = (row: WIPInventoryData) => {
+    setEditingWIPInventory(row); // store selected row
+    setEditingRowId(row.id);
+    setIsDialogOpen(true); // open dialog
+  };
+
   const { getActions } = useWIPInventoryActions({
     editingRowId,
-    handleEdit: (row) => {
-      setEditingWIPInventory(row);
-      setEditingRowId(row.id);
-      setIsDialogOpen(true);
-    },
+    handleEdit,
+    handleDelete: (row) =>{
+       const confirmed = window.confirm(
+      `⚠️ Are you sure you want to delete the role "${row.batch.batchNumber}"? This action cannot be undone.`
+    );
 
-    handleDelete: (row) => {
-      deleteWIPInventory(row.id);
-    },
-
-    handleSave: (row) => {
-      updateWIPInventory({
-        id: row.id,
-        data: buildPayload(row), // ✅ FIXED
-      });
-      setEditingRowId(null);
-    },
-
-    handleCancel: () => {
-      setEditingRowId(null);
+    if (!confirmed) return;
+    deleteWIPInventory(row.id);
     },
   });
-  // ✅ Columns outside JSX
+
+  const onSubmit = (values: any) => {
+    const cleanedValues = {
+      ...values,
+      batchId:
+        values.batchId && values.batchId !== "undefined"
+          ? values.batchId
+          : null, // ✅ IMPORTANT
+      quantity: Number(values.quantity),
+      cost: Number(values.cost),
+    };
+    if (editingWIPInventory) {
+      updateWIPInventory({
+        id: editingWIPInventory.id,
+        data: buildPayload(cleanedValues),
+      });
+    } else {
+      createWIPInventory(cleanedValues as WIPInventoryPostDataAttributes);
+    }
+  };
+
   const columns = usePurchaseInvoicePaymentsColumn(filteredData);
+
   return (
     <div className="min-h-screen w-full p-6">
       <SupplierHeader
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onCreate={() => {
-          setEditingWIPInventory(null);
+          setEditingWIPInventory(null); // reset
           setIsDialogOpen(true);
         }}
         buttonTitle="Create WIP Inventory"
       />
+
+      {/* ✅ PASS editingData */}
       <WIPInventoryDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        onSubmit={() => {}}
+        onSubmit={onSubmit}
+        editingData={
+          editingWIPInventory
+            ? {
+                batchId: editingWIPInventory.batch?.id ?? "", // ✅ FIX 1
+                quantity: editingWIPInventory.quantity ?? 0, // ✅ SAFE
+                cost: Number(editingWIPInventory.cost ?? 0), // ✅ FIX 2
+              }
+            : null
+        }
         onCreate={() => {
           setEditingWIPInventory(null);
           setIsDialogOpen(true);
         }}
       />
+
       <WIPInventoryTable
         data={filteredData}
         columns={columns}
         actions={getActions()}
-        onSelectionChange={setSelected}
-        onRowClick={(row) => {
-          setEditingWIPInventory(row);
-          setIsDialogOpen(true);
-        }}
       />
-      {filteredData.length === 0 && searchQuery && (
-        <div className="text-center text-gray-500">
-          No results for &ldquo;{searchQuery}&rdquo;
-        </div>
-      )}
     </div>
   );
 }

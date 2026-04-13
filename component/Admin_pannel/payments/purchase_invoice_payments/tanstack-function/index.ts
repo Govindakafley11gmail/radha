@@ -75,7 +75,7 @@ export const usePaymnetMutations = (options?: MutationOptions) => {
 
 const getPurchaseInvoicePaymentSettlement =
   async (): Promise<PaymentSettlementGetResponse> => {
-    const response = await apiClient.get("http://localhost:3000/api/v1/payment/settled");
+    const response = await apiClient.get(API_RADDHA_URL.paymentSettlement);
       console.log("Response response",response)
     if (response.data?.success === false) {
       throw { data: response.data };

@@ -23,6 +23,9 @@ const API_RADDHA_URL = {
   rawMaterialReceipt: `${Raddha_Backend_API}/raw-material-receipt`,
   payment: `${Raddha_Backend_API}/payment`,
   paymentSettlement: `${Raddha_Backend_API}/payment/settled`,
+  //Fixed Assets Payment
+  fixedAssetsPayment: `${Raddha_Backend_API}/asset-payment`,
+
   //Approval
   purachaseInovicePaymentApproval: `${Raddha_Backend_API}/raw-material-receipt/approval`,
 
@@ -51,9 +54,13 @@ const API_RADDHA_URL = {
 
   // Inventory management
   rawMaterialInventory: `${Raddha_Backend_API}/raw-material-inventory`,
-  wipInventory:`${Raddha_Backend_API}/wipinventory`,
+  wipInventory: `${Raddha_Backend_API}/wipinventory`,
   //SUPPLIER OPTIONS
   suppliersOptions: `${Raddha_Backend_API}/supplier/with-cid`,
+
+  //Fixed Assets
+  FixedAssets: `${Raddha_Backend_API}/asset`,
+  fixedAssetsApproval: `${Raddha_Backend_API}/asset/approve`,
 };
 
 export default API_RADDHA_URL;

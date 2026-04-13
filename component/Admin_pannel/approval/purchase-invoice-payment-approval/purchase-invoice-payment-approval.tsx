@@ -79,7 +79,7 @@ export default function PurchaseInvoicePaymentApproval() {
           .includes(query)
     );
   }, [PurachaseInvoicePaymentApprovalDataGetData, searchQuery]);
-
+  
   const columns: Column<dataAttributes>[] = [
     {
       header: "S.No",
@@ -121,7 +121,8 @@ const handleApproved = () => {
     return;
   }
 
-  const invoiceId = selectedRow.id; // ✅ keep as string
+  const invoiceId = selectedRow.id; 
+
 
   const confirmed = window.confirm(
     `⚠️ Are you sure you want to approve this invoice? This action cannot be undone.`

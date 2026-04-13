@@ -1,5 +1,6 @@
+
 import { Inter, Maven_Pro, Poppins } from "next/font/google";
-import "./globals.css";
+import './globals.css';  // Add this import for global styles
 import Providers from "./provider";
 import { AuthProvider } from "./context/AuthContext";
 

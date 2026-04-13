@@ -14,7 +14,7 @@ export interface WIPInventoryCreateResponse {
 //Get Response
 
 interface BatchAttributes {
-  id: string;
+  id?: string;
   batchNumber: string;
   productionDate: string; // ISO date string (e.g., "2026-04-08")
   productType: string;

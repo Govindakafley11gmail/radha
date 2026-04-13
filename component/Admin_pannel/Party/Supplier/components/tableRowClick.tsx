@@ -5,8 +5,7 @@ import { useMemo } from "react";
 import * as Yup from "yup";
 
 import { DisplayForm } from "@/common-component/DisplayFormForm";
-import DynamicArrayForm, {
-} from "@/common-component/Dynamic_Array_Form";
+import DynamicArrayForm from "@/common-component/Dynamic_Array_Form";
 import { VerticalModalForm } from "@/component/ModalForm";
 import { TopInvoiceForms } from "../../invoice/dataform";
 import { useGetRawMaterialss } from "@/component/Admin_pannel/master/raw-materials/tanstack-function";
@@ -16,7 +15,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   selectedRow: any;
-//   supplierOptions: any;
+  //   supplierOptions: any;
   handleCreateSubmit: (values: any) => void;
 };
 
@@ -24,7 +23,7 @@ export default function SupplierDetailsModal({
   isOpen,
   onClose,
   selectedRow,
-//   supplierOptions,
+  //   supplierOptions,
   handleCreateSubmit,
 }: Props) {
   // ✅ Hooks FIRST
@@ -42,14 +41,13 @@ export default function SupplierDetailsModal({
     }));
   }, [RawMeterial]);
 
-
   const dynamicBottomInvoiceForm = getInvoiceFields(productTypeOptions);
 
   // ✅ AFTER hooks
   if (!selectedRow) return null;
 
   return (
-    <VerticalModalForm isOpen={isOpen} onClose={onClose} >
+    <VerticalModalForm isOpen={isOpen} onClose={onClose}>
       <DisplayForm
         fields={[
           { name: "name", label: "Name", type: "text" },
@@ -64,6 +62,7 @@ export default function SupplierDetailsModal({
       />
 
       <DynamicArrayForm
+        topContainerClassName="grid grid-cols-2 md:grid-cols-7 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
         title="Invoice Form"
         topFields={TopInvoiceForms}
         arrayFieldName="details"

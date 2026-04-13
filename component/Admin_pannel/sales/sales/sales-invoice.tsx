@@ -197,6 +197,15 @@ export default function SalesInvoicesComponent() {
               className="w-full pl-10 h-12 rounded-md border-slate-200 bg-white text-sm text-gray-900 shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
             />
           </div>
+           <Button
+          onClick={() => {
+            setSelectedRow(null); // create mode
+            setIsModalOpen(true);
+          }}
+          className="bg-orange-500 text-white hover:bg-orange-600 h-12 px-6 rounded-md shadow-md"
+        >
+          Create Sales Invoice
+        </Button>
        
         </div>
         <DataTable
