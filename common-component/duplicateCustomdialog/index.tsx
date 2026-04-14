@@ -84,27 +84,30 @@ export function CustomBroadDialogBox({
             (f.type === "checkbox"
               ? false
               : f.type === "checkbox-group"
-              ? []
-              : f.type === "number"
-              ? undefined
-              : f.type === "file"
-              ? null
-              : ""),
+                ? []
+                : f.type === "number"
+                  ? undefined
+                  : f.type === "file"
+                    ? null
+                    : ""),
         }),
-        {} as Record<string, any>
+        {} as Record<string, any>,
       ),
-    [fields, defaultValues]
+    [fields, defaultValues],
   );
 
   const validationSchema = useMemo(
     () =>
       Yup.object(
-        fields.reduce((acc, f) => {
-          if (f.validation) acc[f.name] = f.validation;
-          return acc;
-        }, {} as Record<string, any>)
+        fields.reduce(
+          (acc, f) => {
+            if (f.validation) acc[f.name] = f.validation;
+            return acc;
+          },
+          {} as Record<string, any>,
+        ),
       ),
-    [fields]
+    [fields],
   );
 
   if (!isOpen) return null;
@@ -244,7 +247,7 @@ export function CustomBroadDialogBox({
                                             field.name,
                                             e.target.value === ""
                                               ? undefined
-                                              : Number(e.target.value)
+                                              : Number(e.target.value),
                                           )
                                         }
                                         placeholder={field.placeholder}
@@ -355,7 +358,7 @@ export function CustomBroadDialogBox({
                                 <Field name={field.name}>
                                   {({ field: f }: FieldProps) => {
                                     const valueArray: string[] = Array.isArray(
-                                      f.value
+                                      f.value,
                                     )
                                       ? f.value
                                       : [];
@@ -371,7 +374,7 @@ export function CustomBroadDialogBox({
                                               {group.options.map((opt: any) => {
                                                 const checked =
                                                   valueArray.includes(
-                                                    opt.value
+                                                    opt.value,
                                                   );
 
                                                 return (
@@ -389,8 +392,8 @@ export function CustomBroadDialogBox({
                                                             field.name,
                                                             valueArray.filter(
                                                               (v) =>
-                                                                v !== opt.value
-                                                            )
+                                                                v !== opt.value,
+                                                            ),
                                                           );
                                                         } else {
                                                           setFieldValue(
@@ -398,7 +401,7 @@ export function CustomBroadDialogBox({
                                                             [
                                                               ...valueArray,
                                                               opt.value,
-                                                            ]
+                                                            ],
                                                           );
                                                         }
                                                       }}
@@ -423,151 +426,7 @@ export function CustomBroadDialogBox({
                               </div>
                             );
 
-                          case "image":
-                            return (
-                              <Field name={field.name}>
-                                {({ field: f }: FieldProps) => {
-                                  const file = f.value as File | null;
-
-                                  return (
-                                    <div className="space-y-4">
-                                      {/* Image Preview */}
-                                      {file && (
-                                        <div className="relative w-full flex justify-center">
-                                          <div className="relative group">
-                                            <img
-                                              src={URL.createObjectURL(file)}
-                                              alt="preview"
-                                              className="h-40 w-40 rounded-2xl object-cover border-2 border-orange-200 shadow-lg"
-                                            />
-                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all rounded-2xl" />
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {/* File Input Container */}
-                                      <div className="relative">
-                                        <label
-                                          htmlFor={field.name}
-                                          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-orange-300 rounded-2xl cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors group"
-                                        >
-                                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <svg
-                                              className="w-8 h-8 mb-2 text-orange-500 group-hover:text-orange-600 transition-colors"
-                                              fill="none"
-                                              stroke="currentColor"
-                                              viewBox="0 0 24 24"
-                                            >
-                                              <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                              />
-                                            </svg>
-                                            <p className="mb-1 text-sm text-orange-600 font-semibold">
-                                              Click to upload image
-                                            </p>
-                                            <p className="text-xs text-orange-500">
-                                              PNG, JPG, GIF up to 10MB
-                                            </p>
-                                          </div>
-                                          <input
-                                            id={field.name}
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                              const selectedFile =
-                                                e.currentTarget.files?.[0] ||
-                                                null;
-                                              setFieldValue(
-                                                field.name,
-                                                selectedFile
-                                              );
-                                            }}
-                                            className="hidden"
-                                          />
-                                        </label>
-                                      </div>
-
-                                      {/* File Name Display */}
-                                      {file && (
-                                        <div className="flex items-center justify-between px-4 py-3 bg-orange-50 border border-orange-200 rounded-xl">
-                                          <div className="flex items-center space-x-3">
-                                            <div className="flex-shrink-0 w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                                              <svg
-                                                className="w-5 h-5 text-white"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                              >
-                                                <path
-                                                  strokeLinecap="round"
-                                                  strokeLinejoin="round"
-                                                  strokeWidth={2}
-                                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                />
-                                              </svg>
-                                            </div>
-                                            <div>
-                                              <p className="text-sm font-medium text-gray-700 truncate max-w-xs">
-                                                {file.name}
-                                              </p>
-                                              <p className="text-xs text-gray-500">
-                                                {(file.size / 1024).toFixed(2)}{" "}
-                                                KB
-                                              </p>
-                                            </div>
-                                          </div>
-                                          <button
-                                            type="button"
-                                            onClick={() =>
-                                              setFieldValue(field.name, null)
-                                            }
-                                            className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-orange-200 transition-colors"
-                                          >
-                                            <svg
-                                              className="w-4 h-4 text-orange-600"
-                                              fill="none"
-                                              stroke="currentColor"
-                                              viewBox="0 0 24 24"
-                                            >
-                                              <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M6 18L18 6M6 6l12 12"
-                                              />
-                                            </svg>
-                                          </button>
-                                        </div>
-                                      )}
-
-                                      {errors[field.name] &&
-                                        touched[field.name] && (
-                                          <div className="flex items-center space-x-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
-                                            <svg
-                                              className="w-4 h-4 text-red-500 flex-shrink-0"
-                                              fill="currentColor"
-                                              viewBox="0 0 20 20"
-                                            >
-                                              <path
-                                                fillRule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                clipRule="evenodd"
-                                              />
-                                            </svg>
-                                            <span className="text-sm text-red-600 font-medium">
-                                              {String(errors[field.name])}
-                                            </span>
-                                          </div>
-                                        )}
-                                    </div>
-                                  );
-                                }}
-                              </Field>
-                            );
-
+                          // ✅ KEEP and UPDATE this combined block:
                           case "file":
                           case "image":
                             return (
@@ -578,16 +437,15 @@ export function CustomBroadDialogBox({
                                     value instanceof File ? value : null;
                                   const isImage =
                                     file?.type?.startsWith("image/") ?? false;
-
-                                  // If editing and value is not a File, treat as existing file (string or URL)
                                   const existingFile =
                                     !file && value && !(value instanceof File)
                                       ? value
                                       : null;
+                                  const isEditing = !!existingFile || !!file;
 
                                   return (
                                     <div className="space-y-4">
-                                      {/* Preview for images */}
+                                      {/* Image preview */}
                                       {isImage && file && (
                                         <div className="relative w-full flex justify-center">
                                           <img
@@ -598,19 +456,108 @@ export function CustomBroadDialogBox({
                                         </div>
                                       )}
 
-                                      {existingFile && (
-                                        <div className="flex items-center justify-between px-4 py-3 bg-orange-50 border border-orange-200 rounded-xl">
-                                          <p className="text-gray-700 font-medium truncate">
-                                            Current File:{" "}
-                                            {typeof existingFile === "string"
-                                              ? existingFile
-                                              : existingFile.name}
-                                          </p>
-                                        </div>
-                                      )}
+                                      {isEditing ? (
+                                        /* ✅ Edit mode: everything inside one unified card */
+                                        <div className="border-2 border-orange-200 rounded-xl overflow-hidden bg-orange-50">
+                                          {/* File name row + remove */}
+                                          <div className="flex items-center justify-between px-4 py-3 border-b border-orange-200">
+                                            <div className="flex items-center gap-2 min-w-0">
+                                              <svg
+                                                className="w-4 h-4 text-orange-500 flex-shrink-0"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                              >
+                                                <path
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  strokeWidth={2}
+                                                  d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                                                />
+                                              </svg>
+                                              <p className="text-sm text-gray-700 font-medium truncate">
+                                                {file
+                                                  ? file.name
+                                                  : typeof existingFile ===
+                                                      "string"
+                                                    ? existingFile
+                                                    : existingFile.name}
+                                              </p>
+                                            </div>
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                form.setFieldValue(
+                                                  field.name,
+                                                  null,
+                                                )
+                                              }
+                                              className="flex-shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg text-orange-600 hover:bg-orange-200 transition-colors text-xs font-semibold ml-2"
+                                            >
+                                              <svg
+                                                className="w-3.5 h-3.5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                              >
+                                                <path
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  strokeWidth={2}
+                                                  d="M6 18L18 6M6 6l12 12"
+                                                />
+                                              </svg>
+                                              Remove
+                                            </button>
+                                          </div>
 
-                                      {/* File input */}
-                                      <div className="relative">
+                                          {/* ✅ Replace/Change input — inside the same card */}
+                                          <label
+                                            htmlFor={field.name}
+                                            className="flex items-center justify-center gap-2 px-4 py-3 cursor-pointer hover:bg-orange-100 transition-colors"
+                                          >
+                                            <svg
+                                              className="w-4 h-4 text-orange-500"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                                              />
+                                            </svg>
+                                            <span className="text-sm text-orange-600 font-semibold">
+                                              {file ? "Change" : "Replace"}{" "}
+                                              {field.type === "image"
+                                                ? "image"
+                                                : "file"}
+                                            </span>
+                                            <input
+                                              id={field.name}
+                                              type="file"
+                                              accept={
+                                                field.type === "image"
+                                                  ? "image/*"
+                                                  : "image/*,application/pdf,.doc,.docx,.txt"
+                                              }
+                                              onChange={(e) => {
+                                                const selectedFile =
+                                                  e.currentTarget.files?.[0] ||
+                                                  null;
+                                                form.setFieldValue(
+                                                  field.name,
+                                                  selectedFile,
+                                                );
+                                              }}
+                                              className="hidden"
+                                            />
+                                          </label>
+                                        </div>
+                                      ) : (
+                                        /* Create mode: standard dashed upload area */
                                         <label
                                           htmlFor={field.name}
                                           className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-orange-300 rounded-2xl cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors group"
@@ -641,7 +588,6 @@ export function CustomBroadDialogBox({
                                                 : "PDF, DOC, DOCX, TXT up to 10MB"}
                                             </p>
                                           </div>
-
                                           <input
                                             id={field.name}
                                             type="file"
@@ -656,50 +602,12 @@ export function CustomBroadDialogBox({
                                                 null;
                                               form.setFieldValue(
                                                 field.name,
-                                                selectedFile
+                                                selectedFile,
                                               );
                                             }}
                                             className="hidden"
                                           />
                                         </label>
-                                      </div>
-
-                                      {/* Display selected file name */}
-                                      {(file || existingFile) && (
-                                        <div className="flex items-center justify-between px-4 py-3 bg-orange-50 border border-orange-200 rounded-xl">
-                                          <p className="text-gray-700 font-medium truncate">
-                                            {file?.name ||
-                                              (typeof existingFile === "string"
-                                                ? existingFile
-                                                : existingFile.name)}
-                                          </p>
-                                          {file && (
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                form.setFieldValue(
-                                                  field.name,
-                                                  null
-                                                )
-                                              }
-                                              className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-orange-200 transition-colors"
-                                            >
-                                              <svg
-                                                className="w-4 h-4 text-orange-600"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                              >
-                                                <path
-                                                  strokeLinecap="round"
-                                                  strokeLinejoin="round"
-                                                  strokeWidth={2}
-                                                  d="M6 18L18 6M6 6l12 12"
-                                                />
-                                              </svg>
-                                            </button>
-                                          )}
-                                        </div>
                                       )}
 
                                       {/* Validation error */}

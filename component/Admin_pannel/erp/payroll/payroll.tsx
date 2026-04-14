@@ -97,10 +97,8 @@ export default function PayRollComponent() {
         type: "select",
         storeLabel: true,
         options: UserOptions,
-        validation: Yup.object({
-          label: Yup.string(),
-          value: Yup.string().required("Employee is required"),
-        }).required("Employee is required"),
+         validation: Yup.string().required("Employee is required"),
+
       },
       {
         name: "basicSalary",

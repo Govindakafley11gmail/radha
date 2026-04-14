@@ -46,24 +46,35 @@ export default function SupplierComponent() {
     });
 
   // actions
+  // actions
   const { getActions } = useSupplierActions({
     editingRowId,
+
     handleEdit: (row) => {
       setEditingAccountType(row);
       setIsDialogOpen(true);
     },
+
     handleDelete: (row) => deleteSuppliers(row.supplier_id),
+
     handleSave: () => {
       if (!rowValues.supplier_id) return;
+
       updateSuppliers({
         id: rowValues.supplier_id,
         data: buildSupplierFormData(rowValues),
       });
+
       setEditingRowId(null);
     },
+
     handleCancel: () => {
       setEditingRowId(null);
       setRowValues({});
+    },
+
+    onDownload: (row: SupplierData) => {
+      downloadMou(row.supplier_id);
     },
   });
 
@@ -114,7 +125,6 @@ export default function SupplierComponent() {
         columns={columns}
         actions={getActions()}
         onSelectionChange={setSelected}
-        downloadMou={downloadMou}
         onRowClick={(row) => {
           setEditingAccountType(row);
           setIsDialogOpen(true);

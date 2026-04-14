@@ -5,7 +5,6 @@ import { Edit, Download, ShoppingCart, Delete } from "lucide-react";
 type Props = {
   data: SupplierData[];
   onRowClick: (row: SupplierData) => void;
-  onEdit: (row: SupplierData) => void;
   onDownload: (row: SupplierData) => void;
   onAddPurchase: (row: SupplierData) => void;
   onDeleteSupplier: (row: SupplierData) => void;
@@ -13,11 +12,9 @@ type Props = {
 
 export default function SupplierTable({
   data,
-  onRowClick,
-  onEdit,
+
   onDownload,
   onAddPurchase,
-  onDeleteSupplier,
 }: Props) {
   const columns: Column<SupplierData>[] = [
     {
@@ -34,12 +31,7 @@ export default function SupplierTable({
 
   // =================== Dynamic Actions ===================
   const getActions = () => [
-    {
-      label: "Edit",
-      icon: <Edit className="h-4 w-4" />,
-      onClick: onEdit,
-      title: "Edit Supplier",
-    },
+
     {
       label: "Add Purchase",
       icon: <ShoppingCart className="h-4 w-4" />,
@@ -52,12 +44,7 @@ export default function SupplierTable({
       onClick: onDownload,
       title: "Download MOU for Supplier",
     },
-    {
-      label: "Delete",
-      icon: <Delete className="h-4 w-4" />,
-      onClick: onDeleteSupplier,
-      title: "Delete Supplier",
-    },
+   
   ];
 
   return (

@@ -1,147 +1,61 @@
+
+
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
 
-import SupplierTable from "./components/SupplierTable";
-import InvoiceModal from "./components/InvoiceModal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FileText, Package } from "lucide-react";
+import PurchaseInvoiceTabs from "./tabs/purchase-InvoiceTabs";
+import SupplierComponent from "../Supplier/supplier";
 
-import { useSupplierData } from "./hooks/useSupplierData";
 
-import { SupplierData } from "../Supplier/interface";
-import SupplierHeader from "../Supplier/components/SupplierHeader";
-import SupplierDialog from "../Supplier/components/supplierDialog";
-import { buildSupplierFormData } from "../Supplier/utils/supplierFormData";
-import { useSuppliersMutations } from "../Supplier/tanstack";
-import { showToast } from "nextjs-toast-notify";
 
-// ⚠️ make sure this exists in your project
-import { useDownloadMou } from "../Supplier/tanstack";
 
 export default function PurchaseInvoicePage() {
-  const [isSupplierFormOpen, setIsSupplierFormOpen] = useState(false);
-  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
-
-  const [selectedRow, setSelectedRow] = useState<SupplierData | null>(null);
-  const [editingAccountType, setEditingAccountType] =
-    useState<SupplierData | null>(null);
-
-  const {
-    suppliers,
-    filteredSuppliers,
-    searchQuery,
-    setSearchQuery,
-    productTypeOptions,
-    dynamicBottomInvoiceForm,
-  } = useSupplierData();
-
-  const { mutate: downloadMou } = useDownloadMou();
-
-  const {
-    createSuppliers,
-    updateSuppliers,
-    deleteSuppliers,
-  } = useSuppliersMutations({
-    onSuccess: (data) => {
-      showToast.success(data.message);
-      setIsSupplierFormOpen(false);
-    },
-    onError: (error) => {
-      showToast.error(error?.data?.message || "Error");
-    },
-  });
-
-  // ================================
-  // HANDLERS
-  // ================================
-
-  const handleSubmit = (values: any) => {
-    const formData = buildSupplierFormData(values);
-
-    if (editingAccountType?.supplier_id) {
-      updateSuppliers({
-        id: editingAccountType.supplier_id,
-        data: formData,
-      });
-    } else {
-      createSuppliers(formData);
-    }
-  };
-
-  const handleEditSupplier = (row: SupplierData) => {
-    setEditingAccountType(row);
-    setIsSupplierFormOpen(true);
-  };
-
-  const handleDeleteSupplier = (row: SupplierData) => {
-    if (!row?.supplier_id) return;
-    deleteSuppliers(row.supplier_id);
-  };
-
-  const handleDownloadSupplier = (row: SupplierData) => {
-    if (!row?.supplier_id) return;
-    downloadMou(row.supplier_id);
-  };
-
-  const handleAddPurchase = (row: SupplierData) => {
-    setSelectedRow(row);
-    setIsInvoiceOpen(true);
-  };
-
-  // ================================
-  // UI
-  // ================================
-
+  
   return (
-    <div className="min-h-screen w-full p-6">
+    <div className="min-h-screen w-full p-6 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* Page Header
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Raw Materials Management</h1>
+          <p className="text-gray-600 mt-1">Manage purchase invoices and materials</p>
+        </div> */}
 
-      {/* HEADER */}
-      <SupplierHeader
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onCreate={() => {
-          setEditingAccountType(null);
-          setIsSupplierFormOpen(true);
-        }}
-        buttonTitle="Create Supplier"
-      />
+        {/* Tabs Container */}
+        <Tabs defaultValue="invoices" className="w-full">
+          <TabsList className="bg-white border border-gray-200 p-1 rounded-lg shadow-sm h-auto">
+            <TabsTrigger
+              value="invoices"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md px-6 py-3 rounded-md transition-all duration-200 font-medium flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              Purchase Invoices
+            </TabsTrigger>
+            <TabsTrigger
+              value="other"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md px-6 py-3 rounded-md transition-all duration-200 font-medium flex items-center gap-2"
+            >
+              <Package className="h-4 w-4" />
+              Supplier
+            </TabsTrigger>
+          </TabsList>
 
-      {/* SUPPLIER FORM MODAL */}
-      <SupplierDialog
-        isOpen={isSupplierFormOpen}
-        onClose={() => {
-          setIsSupplierFormOpen(false);
-          setEditingAccountType(null);
-        }}
-        onSubmit={handleSubmit}
-        editingData={editingAccountType}
-        onCreate={() => {
-          setEditingAccountType(null);
-          setIsSupplierFormOpen(true);
-        }}
-      />
+          {/* First Tab - Purchase Invoices */}
+          <TabsContent value="invoices" className="space-y-4 mt-6">
+            <PurchaseInvoiceTabs />
+          </TabsContent>
 
-      {/* TABLE */}
-      <SupplierTable
-        data={filteredSuppliers}
-        onRowClick={(row) => {
-          setSelectedRow(row);
-          setIsInvoiceOpen(true);
-        }}
-        onEdit={handleEditSupplier}
-        onDownload={handleDownloadSupplier}
-        onAddPurchase={handleAddPurchase}
-        onDeleteSupplier={handleDeleteSupplier}
-      />
-
-      {/* INVOICE MODAL */}
-      <InvoiceModal
-        isOpen={isInvoiceOpen}
-        onClose={() => setIsInvoiceOpen(false)}
-        selectedRow={selectedRow}
-        productTypeOptions={productTypeOptions}
-        dynamicBottomInvoiceForm={dynamicBottomInvoiceForm}
-      />
+          {/* Second Tab - Other Component */}
+          <TabsContent value="other" className="mt-6">
+            <SupplierComponent />
+            {/* Or directly import and use: <YourOtherComponent /> */}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
+
 }

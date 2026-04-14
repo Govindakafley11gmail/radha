@@ -1,11 +1,12 @@
 import { ActionConfig } from "@/component/table";
 import { SupplierData } from "../interface";
-import { Edit, Delete, Save, X } from "lucide-react";
+import { Edit, Delete, Save, X, Download } from "lucide-react";
 
 type Props = {
   editingRowId: string | null;
   handleEdit: (row: SupplierData) => void;
   handleDelete: (row: SupplierData) => void;
+  onDownload: (row: SupplierData) => void;
   handleSave: () => void;
   handleCancel: () => void;
 };
@@ -16,6 +17,7 @@ export const useSupplierActions = ({
   handleDelete,
   handleSave,
   handleCancel,
+  onDownload,
 }: Props) => {
   const getActions = (): ActionConfig<SupplierData>[] => {
     if (!editingRowId) {
@@ -29,6 +31,12 @@ export const useSupplierActions = ({
           label: "Delete",
           icon: <Delete className="h-4 w-4" />,
           onClick: handleDelete,
+        },
+        {
+          label: "Download",
+          icon: <Download className="h-4 w-4" />,
+          onClick: onDownload,
+          title: "Download MOU for Supplier",
         },
       ];
     }

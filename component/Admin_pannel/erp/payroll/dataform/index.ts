@@ -24,6 +24,8 @@ const years = Array.from({ length: 10 }, (_, i) => {
     value: year.toString(),
   };
 });
+import { NextResponse } from "next/server";
+
 export const TopPayrollForms: FieldConfig[] = [
   {
     name: "payrollDate",
@@ -38,13 +40,14 @@ export const TopPayrollForms: FieldConfig[] = [
     options: months,
     validation: Yup.string().required("Month is required"),
   },
- {
-  name: "year",
-  label: "Year",
-  type: "select",
-  options: years,
-  validation: Yup.string().required("Year is required"),
-},
+  {
+    name: "year",
+    label: "Year",
+    type: "year",
+    minYear: 1980,
+    maxYear: 2025,
+    validation: Yup.number().required("Required"),
+  },
   {
     name: "totalAmount",
     label: "Total Amount",
@@ -82,4 +85,3 @@ export const TopPayrollForms: FieldConfig[] = [
     validation: Yup.number().required("Freight Cost is required"),
   },
 ];
-

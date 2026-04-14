@@ -48,7 +48,9 @@ export default function SupplierDialog({
       };
 
   return (
-    <CustomBroadDialogBox
+    <>
+  
+     <CustomBroadDialogBox
       isOpen={isOpen}
       onClose={onClose}
       title={editingData ? "Edit Supplier" : "Create Supplier"}
@@ -57,5 +59,7 @@ export default function SupplierDialog({
       OnSubmitTitle={editingData ? "Update" : "Create"}
       defaultValues={defaultValues}
     />
+    </>
+   
   );
 }

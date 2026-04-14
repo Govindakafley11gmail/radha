@@ -9,7 +9,6 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actions: any;
   onSelectionChange: (rows: SupplierData[]) => void;
-  downloadMou: (id: string) => void;
   onRowClick?: (row: SupplierData) => void;
 };
 
@@ -18,28 +17,14 @@ export default function SupplierTable({
   columns,
   actions,
   onSelectionChange,
-  downloadMou,
   onRowClick,
 }: Props) {
-  const enhancedColumns: Column<SupplierData>[] = [
-    ...columns,
-    {
-      header: "MOU DOC",
-      render: (_, row) =>
-        row.mouFile ? (
-          <Button onClick={() => downloadMou(row.supplier_id)}>
-            <Download className="w-5 h-5" />
-          </Button>
-        ) : (
-          "-"
-        ),
-    },
-  ];
+
 
   return (
     <DataTable
       data={data}
-      columns={enhancedColumns}
+      columns={columns}
       actions={actions}
       selectable
       onSelectionChange={onSelectionChange}

@@ -24,7 +24,8 @@ export type FieldType =
   | "select"
   | "file"
   | "image"
-  | "textarea";
+  | "textarea"
+  | "year"
 
 export interface FieldConfig {
   name: string;
@@ -39,6 +40,8 @@ export interface FieldConfig {
     percentageOf?: string;
   };
   disabled?: boolean;
+  minYear?: number; // ✅ added
+  maxYear?: number; // ✅ added
 }
 
 interface DynamicArrayFormProps {
@@ -68,36 +71,180 @@ interface FormikSelectFieldProps {
   options: { label: string; value: any }[];
   storeLabel?: boolean;
   placeholder?: string;
+  disabled?:boolean
+}
+function ComboboxField({
+  name,
+  options,
+  placeholder = "Type to search...",
+  disabled,
+}: {
+  name: string;
+  options: { label: string; value: string | number }[];
+  placeholder?: string;
+  disabled?: boolean;
+}) {
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<any>();
+  const currentValue = getIn(values, name) ?? "";
+
+  const [query, setQuery] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  // Sync display when value is set externally (e.g. initialValues)
+  const currentLabel = React.useMemo(
+    () => options.find((o) => String(o.value) === String(currentValue))?.label ?? "",
+    [currentValue, options]
+  );
+
+  const [inputDisplay, setInputDisplay] = React.useState(currentLabel);
+
+  // Keep display in sync when form value changes externally
+  React.useEffect(() => {
+    setInputDisplay(currentLabel);
+  }, [currentLabel]);
+
+  const filtered = React.useMemo(() => {
+    if (!query) return options;
+    return options.filter((o) =>
+      o.label.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [query, options]);
+
+  // Close on outside click
+  React.useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) {
+        setOpen(false);
+        // Reset display to current selected label if user typed but didn't pick
+        setInputDisplay(currentLabel);
+        setQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [currentLabel]);
+
+  const handleSelect = (opt: { label: string; value: string | number }) => {
+    setFieldValue(name, opt.value);
+    setFieldTouched(name, true, false);
+    setInputDisplay(opt.label);
+    setQuery("");
+    setOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    setInputDisplay(e.target.value);
+    setOpen(true);
+    // Clear form value while typing so validation fires correctly
+    if (!e.target.value) setFieldValue(name, "");
+  };
+
+  const handleClear = () => {
+    setFieldValue(name, "");
+    setInputDisplay("");
+    setQuery("");
+    setOpen(false);
+  };
+
+  return (
+    <div ref={containerRef} className="relative w-full">
+      <div className="relative">
+        <input
+          type="text"
+          value={inputDisplay}
+          onChange={handleInputChange}
+          onFocus={() => setOpen(true)}
+          disabled={disabled}
+          placeholder={placeholder}
+          className={FIELD_BASE + " pr-8"}
+        />
+
+        {/* Clear button or chevron */}
+        {inputDisplay ? (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        ) : (
+          <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        )}
+      </div>
+
+      {/* Dropdown */}
+      {open && (
+        <ul className="absolute z-50 mt-1 w-full max-h-52 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg text-sm">
+          {filtered.length > 0 ? (
+            filtered.map((opt) => (
+              <li
+                key={opt.value}
+                onMouseDown={() => handleSelect(opt)}
+                className={
+                  "px-3 py-2 cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition-colors " +
+                  (String(opt.value) === String(currentValue)
+                    ? "bg-orange-50 text-orange-600 font-medium"
+                    : "text-gray-700")
+                }
+              >
+                {opt.label}
+              </li>
+            ))
+          ) : (
+            <li className="px-3 py-2 text-gray-400">No results found</li>
+          )}
+        </ul>
+      )}
+    </div>
+  );
 }
 function FormikSelectField({
   name,
   options,
   placeholder,
+  disabled,
 }: FormikSelectFieldProps) {
-  const { setFieldValue, setFieldTouched, values } = useFormikContext<any>();
-
-  const value = getIn(values, name) ?? "";
+  return (
+    <ComboboxField
+      name={name}
+      options={options}
+      placeholder={placeholder || "Type to search..."}
+      disabled={disabled}
+    />
+  );
+}
+function YearSelectField({
+  name,
+  minYear = 1970,
+  maxYear = new Date().getFullYear(),
+  disabled,
+}: {
+  name: string;
+  minYear?: number;
+  maxYear?: number;
+  disabled?: boolean;
+}) {
+  const years = Array.from(
+    { length: maxYear - minYear + 1 },
+    (_, i) => maxYear - i
+  ).map((y) => ({ label: String(y), value: y }));
 
   return (
-    <select
+    <ComboboxField
       name={name}
-      value={value}
-      onChange={(e) => {
-        const val = e.target.value;
-
-        setFieldValue(name, val); // ✅ ALWAYS STRING VALUE ONLY
-        setFieldTouched(name, true, false);
-      }}
-      className={FIELD_BASE}
-    >
-      <option value="">{placeholder || "Select option"}</option>
-
-      {options?.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+      options={years}
+      placeholder="Type or search year..."
+      disabled={disabled}
+    />
   );
 }
 
@@ -402,6 +549,19 @@ function RenderField({
 
   if (field.type === "textarea") {
     return <ModernTextarea name={fieldName} />;
+  }
+   if (field.type === "year") { // ✅ added
+    return (
+      <>
+        <YearSelectField
+          name={fieldName}
+          minYear={field.minYear}
+          maxYear={field.maxYear}
+          disabled={field.disabled}
+        />
+        <FieldError name={fieldName} />
+      </>
+    );
   }
 
   if (field.type === "file" || field.type === "image") {
