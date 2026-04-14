@@ -21,9 +21,15 @@ type ThemeType = (typeof themes)[number];
 export default function TopNavbar({
   theme,
   setTheme,
+  user,
+  Role,
+  NameLetter
 }: {
   theme: ThemeType;
   setTheme: (theme: ThemeType) => void;
+  user?:string,
+  Role?:string,
+  NameLetter?:string
 }) {
   const { logout } = useAuth();
   const router = useRouter();
@@ -136,7 +142,7 @@ export default function TopNavbar({
           >
             <Globe className="h-[18px] w-[18px]" />
           </button>
- 
+
           {/* Help */}
           <button
             className={`nav-icon-btn ${iconCls} ${isDark ? "hover:bg-zinc-800" : isOrange ? "hover:bg-orange-100" : "hover:bg-orange-50"}`}
@@ -145,7 +151,9 @@ export default function TopNavbar({
             <HelpCircle className="h-[18px] w-[18px]" />
           </button>
 
-          <span className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`} />
+          <span
+            className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`}
+          />
 
           {/* Subtle breadcrumb / page context */}
           <span
@@ -158,36 +166,25 @@ export default function TopNavbar({
 
         {/* ── RIGHT: search + controls ── */}
         <div className="flex items-center gap-3">
-
-          {/* Search */}
-          <div
-            className={`
-              search-bar relative flex items-center rounded-xl border px-3 h-9 w-64
-              ${searchFocused ? "focused" : ""}
-              ${glass} ${ringColor}
-              focus-within:ring-2 focus-within:shadow-lg
-              transition-all duration-300
-            `}
-          >
-            <Search
-              className={`h-[15px] w-[15px] mr-2 shrink-0 transition-colors
-                ${isDark ? "text-zinc-500" : isOrange ? "text-orange-400" : "text-orange-300"}
-              `}
-            />
-            <Input
-              type="text"
-              placeholder="Search…"
-              className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-9 w-full text-[13px] placeholder:opacity-50"
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-            />
-            {/* Keyboard hint */}
-            <kbd
-              className={`hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium border ml-2 shrink-0
-                ${isDark ? "border-zinc-700 text-zinc-500 bg-zinc-800" : isOrange ? "border-orange-200 text-orange-400 bg-orange-50" : "border-orange-100 text-orange-400 bg-white"}`}
-            >
-              ⌘K
-            </kbd>
+          {/* User Profile */}
+          <div className="flex items-center gap-2.5 px-1.5 pr-3.5 py-1  bg-white  cursor-pointer group">
+            {/* Avatar */}
+            <div className="relative shrink-0">
+              <div className="w-11 h-11 rounded-[14px] bg-linear-to-br from-orange-400 to-orange-600 flex items-center justify-center text-sm font-semibold text-white tracking-wide">
+               {NameLetter}
+              </div>
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-500 border-2 border-white" />
+            </div>
+            {/* Text */}
+            <div className="flex flex-col leading-none">
+              <span className="text-[13px] font-semibold text-gray-900">
+                {user}
+              </span>
+              <span className="text-[10px] font-medium text-orange-500 mt-0.5">
+                {Role}
+              </span>
+            </div>
+            {/* Caret */}
           </div>
 
           {/* Theme toggle */}
@@ -214,18 +211,21 @@ export default function TopNavbar({
             )}
           </button>
 
-          <span className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`} />
+          <span
+            className={`divider ${isDark ? "text-zinc-400" : isOrange ? "text-orange-300" : "text-orange-200"}`}
+          />
 
           {/* User / Logout */}
           <button
             className={`
               logout-btn flex items-center gap-2 pl-1 pr-3 h-9 rounded-xl
               text-[13px] font-semibold tracking-tight border
-              ${isDark
-                ? "bg-zinc-800 border-zinc-700 text-zinc-200 hover:bg-zinc-700"
-                : isOrange
-                  ? "bg-orange-100 border-orange-200 text-orange-800 hover:bg-orange-200"
-                  : "bg-white border-orange-200 text-orange-600 hover:bg-orange-50"
+              ${
+                isDark
+                  ? "bg-zinc-800 border-zinc-700 text-zinc-200 hover:bg-zinc-700"
+                  : isOrange
+                    ? "bg-orange-100 border-orange-200 text-orange-800 hover:bg-orange-200"
+                    : "bg-white border-orange-200 text-orange-600 hover:bg-orange-50"
               }
             `}
             onClick={handleLogout}

@@ -4,8 +4,13 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Sidebar from "@/component/sidebar";
 import { menuContent } from "@/utils/item";
 import TopNavbar from "@/component/navbar";
+import { useAuth } from "@/app/context/AuthContext";
+import { getInitials } from "./helperFunction";
 
 export default function DashboardPage() {
+  const {user} = useAuth()
+  const userRole = user?.role[0].name
+  const NameLetter = getInitials(user?.name)
   const [theme, setTheme] = useState<"light" | "dark" | "orange" >("light");
 
   // Apply theme to <body>
@@ -60,7 +65,7 @@ export default function DashboardPage() {
       />
 
       <main className="flex-1 overflow-y-auto">
-        <TopNavbar theme={theme} setTheme={setTheme} />
+        <TopNavbar theme={theme} setTheme={setTheme} user={user?.name} Role={userRole} NameLetter={NameLetter}/>
 
         <div className="max-w-7xl mx-auto py-5">
           <h1 className="text-xl font-bold mb-12 opacity-80 p-5">

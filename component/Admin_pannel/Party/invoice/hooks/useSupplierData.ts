@@ -12,24 +12,16 @@ export function useSupplierData() {
 
   const suppliers = supplierRes?.data ?? [];
   const rawMaterials = rawRes?.data ?? [];
-
   const productTypeOptions = useMemo(
     () =>
       rawMaterials.map((i: any) => ({
-        label: i.name,
-        value: i.id,
+        label: i.name,      value: String(i.id), // ✅ convert to string
+
       })),
     [rawMaterials]
   );
+  console.log("productTypeOptions", productTypeOptions);
 
-  const supplierOptions = useMemo(
-    () =>
-      suppliers.map((i: any) => ({
-        label: i.name,
-        value: i.supplier_id,
-      })),
-    [suppliers]
-  );
 
   const filteredSuppliers = useMemo(() => {
     const q = searchQuery.toLowerCase();
@@ -53,7 +45,6 @@ export function useSupplierData() {
     searchQuery,
     setSearchQuery,
     productTypeOptions,
-    supplierOptions,
     dynamicBottomInvoiceForm,
   };
 }

@@ -36,18 +36,17 @@ const slides = [
   {
     id: 0,
     title: "Building Trust, Driving Growth",
-    desc:
-      "Present your business with confidence using a clean, flexible, and fully responsive template that helps you connect with clients and grow.",
+    desc: "Present your business with confidence using a clean, flexible, and fully responsive template that helps you connect with clients and grow.",
   },
   {
     id: 1,
     title: "Empowering Digital Excellence",
-    desc:
-      "Create modern experiences with scalable architecture, smooth animations, and industry-grade UI patterns.",
+    desc: "Create modern experiences with scalable architecture, smooth animations, and industry-grade UI patterns.",
   },
 ];
 
 export default function HeroPage() {
+
   const [index, setIndex] = useState(0);
   const currentSlide = slides[index];
   const words = currentSlide.title.split(" ");

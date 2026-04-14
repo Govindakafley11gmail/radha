@@ -69,57 +69,35 @@ interface FormikSelectFieldProps {
   storeLabel?: boolean;
   placeholder?: string;
 }
-
 function FormikSelectField({
   name,
   options,
-  storeLabel = false,
   placeholder,
 }: FormikSelectFieldProps) {
-  const { values, setFieldValue, setFieldTouched } = useFormikContext<any>();
-  const fieldValue = getIn(values, name);
-  const currentValue = storeLabel
-    ? (fieldValue?.value ?? "")
-    : (fieldValue ?? "");
+  const { setFieldValue, setFieldTouched, values } = useFormikContext<any>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = options.find(
-      (opt) => String(opt.value) === e.target.value
-    );
-    if (!selectedOption) return;
-    setFieldValue(name, storeLabel ? selectedOption : selectedOption.value);
-    setFieldTouched(name, true, true);
-  };
+  const value = getIn(values, name) ?? "";
 
   return (
-    <div className="relative">
-      <select
-        name={name}
-        value={currentValue}
-        onChange={handleChange}
-        className={`${FIELD_BASE} appearance-none pr-9 cursor-pointer`}
-      >
-        <option value="">{placeholder || "Select an option"}</option>
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+    <select
+      name={name}
+      value={value}
+      onChange={(e) => {
+        const val = e.target.value;
 
-      {/* Chevron icon */}
-      <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </span>
-    </div>
+        setFieldValue(name, val); // ✅ ALWAYS STRING VALUE ONLY
+        setFieldTouched(name, true, false);
+      }}
+      className={FIELD_BASE}
+    >
+      <option value="">{placeholder || "Select option"}</option>
+
+      {options?.map((opt) => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
   );
 }
 

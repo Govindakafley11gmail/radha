@@ -12,6 +12,7 @@ import ServicesSection from "@/component/website/services";
 import FeaturesSection from "@/component/website/modern_business";
 import BlogPosts, { BlogPost, SidebarPost } from "@/component/website/blog";
 import Footer from "@/component/footer/footer";
+import { useAuth } from "./context/AuthContext";
 export const sampleMainPosts: BlogPost[] = [
   {
     id: 1,
@@ -62,6 +63,7 @@ export const sampleSidebarPosts: SidebarPost[] = [
   }
 ];
 export default function HomeHero() {
+  
   return (
     <div>
       <Navbar />

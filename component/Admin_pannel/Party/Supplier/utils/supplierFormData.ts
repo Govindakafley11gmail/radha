@@ -1,6 +1,4 @@
-import { SupplierData } from "../interface";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const buildSupplierFormData = (values: any) => {
   const formData = new FormData();
 
@@ -17,6 +15,12 @@ export const buildSupplierFormData = (values: any) => {
 
   if (values.mouFile instanceof File) {
     formData.append("mouFile", values.mouFile);
+  }
+
+  // 🔥 IMPORTANT FIX: append details
+  if (values.details && Array.isArray(values.details)) {
+    
+    formData.append("details", JSON.stringify(values.details));
   }
 
   return formData;

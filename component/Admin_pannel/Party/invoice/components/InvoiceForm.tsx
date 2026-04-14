@@ -5,7 +5,6 @@ import { TopInvoiceForms } from "../dataform";
 import { useInvoiceSubmit } from "../hooks/useInvoiceForm";
 type Props = {
   selectedRow: any;
-  supplierOptions: any[];
   productTypeOptions: any[];
   dynamicBottomInvoiceForm: any[];
     onClose?: () => void;
@@ -14,19 +13,26 @@ type Props = {
 
 export default function InvoiceForm({
   selectedRow,
-  supplierOptions,
-  productTypeOptions,
+ productTypeOptions,
   dynamicBottomInvoiceForm,
   onClose
 }: Props) {
   const { handleSubmit } = useInvoiceSubmit(selectedRow, onClose);
-
+const updatedFields = dynamicBottomInvoiceForm.map((field) => {
+  if (field.name === "productType") {
+    return {
+      ...field,
+      options: productTypeOptions, // ✅ inject here
+    };
+  }
+  return field;
+});
   return (
     <DynamicArrayForm
       title="Invoice Form"
       topFields={TopInvoiceForms}
       arrayFieldName="details"
-      arrayFields={dynamicBottomInvoiceForm}
+      arrayFields={updatedFields}
       topContainerClassName="grid grid-cols-2 md:grid-cols-8 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
       initialValues={{
         invoiceNo: "",

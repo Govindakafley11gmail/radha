@@ -7,7 +7,7 @@ import { buildInvoicePayload } from "../dataform/mapInvoicePayload";
 
 export function useInvoiceSubmit(selectedRow: SupplierData | null,  onSuccessClose?: () => void
 ) {
-  
+  console.log("Slec")
   const { createPuchaseInvoice } = usePuchaseInvoiceMutations({
     onSuccess: (data) => {
       showToast.success(data.message);

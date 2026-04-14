@@ -12,7 +12,6 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   selectedRow: SupplierData | null;
-  supplierOptions: any[];
   productTypeOptions: any[];
   dynamicBottomInvoiceForm: any[];
 };
@@ -21,7 +20,6 @@ export default function InvoiceModal({
   isOpen,
   onClose,
   selectedRow,
-  supplierOptions,
   productTypeOptions,
   dynamicBottomInvoiceForm,
 }: Props) {
@@ -36,7 +34,6 @@ export default function InvoiceModal({
       {/* Invoice Form */}
       <InvoiceForm
         selectedRow={selectedRow}
-        supplierOptions={supplierOptions}
         productTypeOptions={productTypeOptions}
         dynamicBottomInvoiceForm={dynamicBottomInvoiceForm}
         onClose={onClose}

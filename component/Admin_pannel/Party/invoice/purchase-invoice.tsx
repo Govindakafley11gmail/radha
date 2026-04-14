@@ -32,7 +32,6 @@ export default function PurchaseInvoicePage() {
     searchQuery,
     setSearchQuery,
     productTypeOptions,
-    supplierOptions,
     dynamicBottomInvoiceForm,
   } = useSupplierData();
 
@@ -140,7 +139,6 @@ export default function PurchaseInvoicePage() {
         isOpen={isInvoiceOpen}
         onClose={() => setIsInvoiceOpen(false)}
         selectedRow={selectedRow}
-        supplierOptions={supplierOptions}
         productTypeOptions={productTypeOptions}
         dynamicBottomInvoiceForm={dynamicBottomInvoiceForm}
       />

@@ -17,6 +17,8 @@ export const getDynamicBottomInvoiceForm = (
       type: "select",
       storeLabel: false,
       options: ProductTypeOptions,
+            validation: Yup.string().required(),
+
     },
     {
       name: "size",

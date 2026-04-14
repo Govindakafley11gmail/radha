@@ -6,11 +6,12 @@ export const buildInvoicePayload = (
 ) => ({
   supplierId,
   ...values,
-  details: values.details?.map(({ productType, ...rest }: any) => ({
-    ...rest,
-    productType: productType?.label ?? "",
-    productId: productType?.value ??"",
+
+  details: values.details?.map((item: any) => ({
+    ...item,
+    productType: item.productType ?? "", // ✅ FIXED
   })),
+
   invoiceNo: values.invoiceNo || "",
   invoiceDate: values.invoiceDate || "",
   freightCost: values.freightCost || 0,
