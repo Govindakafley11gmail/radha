@@ -4,7 +4,6 @@
 
 import { Input } from "@/common-component/duplicateCustomdialog";
 import { Search } from "lucide-react";
-import { DataTable } from "@/component/table";
 import { useDownloadFile } from "@/component/download-tanstack/download-tanstack";
 import {
   downloadInvoiceFile,
@@ -12,24 +11,31 @@ import {
 } from "../tanstack-function";
 import { useRawMaterialReceiptData } from "../OthersTabsComponent/hook/useMaterialReceipts";
 import { useRawMaterialReceiptColumns } from "../OthersTabsComponent/hook/useRawMaterialReceipts";
+import RawMaterialReceiptTable from "../OthersTabsComponent/component/raw-materials-receipt-table";
+import useRawMaterialReceiptActions from "../OthersTabsComponent/hook/useRawMaterialsReceipt";
+import type { RawMaterialReceipt } from "../interface";
 
 export default function OtherComponentTab() {
   const { searchQuery, setSearchQuery, filteredData } =
     useRawMaterialReceiptData();
 
-  const { mutate: downloadMou, isPending: isDownloading } = useDownloadFile();
-  const { mutate: generateReceipt, isPending: isGenerating } =
+  const { mutate: downloadMou} = useDownloadFile();
+  const { mutate: generateReceipt } =
     useDownloadFile();
 
   const columns = useRawMaterialReceiptColumns({
     data: filteredData,
-    downloadMou,
-    downloadInvoiceFile,
-    isDownloading,
-    generateReceipt,
-    generateMaterialReceipt,
-    isGenerating,
+    
   });
+   const { getActions } = useRawMaterialReceiptActions({
+    downloadMou: (row: RawMaterialReceipt) => {
+      downloadMou(downloadInvoiceFile(row.id));
+    },
+    generateReceipt: (row: RawMaterialReceipt) => {
+      generateReceipt(generateMaterialReceipt(row.id));
+    },
+  });
+
 
   return (
     <div className="min-h-screen w-full p-6">
@@ -50,7 +56,8 @@ export default function OtherComponentTab() {
         </div>{" "}
       </div>
 
-      <DataTable data={filteredData} columns={columns} pageSize={10} />
+      <RawMaterialReceiptTable data={filteredData} columns={columns}  actions={getActions()} />
+ 
 
       {/* Empty State */}
       {filteredData.length === 0 && searchQuery && (

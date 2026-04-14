@@ -10,7 +10,7 @@ import DynamicArrayForm from "@/common-component/Dynamic_Array_Form";
 import { useGetPurchaseInvoicePayment } from "../tanstack-function";
 import { SupplierandInvoiceDataAttributes } from "../interface";
 import { useDownloadFile } from "@/component/download-tanstack/download-tanstack";
-import { downloadInvoiceFile } from "@/component/Admin_pannel/Party/raw-material-receipt/tanstack-function";
+import { downloadInvoiceFile, generateMaterialReceipt } from "@/component/Admin_pannel/Party/raw-material-receipt/tanstack-function";
 import { TopPuchaseInvoicePaymentFieldsForms } from "../dataform";
 import { usePurchaseInvoicePayements } from "../PurchaseInvoicePaymentsComponent/hooks/usePurchaseInvoicePayements";
 import { usePurchaseInvoicePaymentsColumn } from "../PurchaseInvoicePaymentsComponent/hooks/usePurchaseInvoicePaymentsColumn";
@@ -33,6 +33,11 @@ export default function PurchaseInvoicesPaymentTab() {
   const { searchQuery, setSearchQuery, filteredData } =
     usePurchaseInvoicePayements(PurchaseInvoicePaymentGetData);
   const { mutate: downloadMou, isPending: isDownloading } = useDownloadFile();
+
+
+    const { mutate: generateReceipt, isPending: isGenerating } =
+    useDownloadFile();
+
   const { handleSubmit: handleCreateSubmit } = usePurchaseInvoicePaymentSubmit(
     selectedRow as any,
     () => setIsModalOpen(false),
@@ -42,6 +47,9 @@ export default function PurchaseInvoicesPaymentTab() {
   const { getActions } = usePurchaseInvoicePaymentsActions({
     handleDownload: (row) => {
       downloadMou(downloadInvoiceFile(row.rawMaterialReceipt.id));
+    },
+    generateReceipt: (row) => {
+      generateReceipt(generateMaterialReceipt(row.id));
     },
   });
 

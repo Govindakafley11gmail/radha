@@ -127,7 +127,7 @@ export default function BlogPosts({
             {currentPosts.map((post) => (
               <Card
                 key={post.id}
-                className="overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-white"
+                className="p-0 m-0 overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-white"
                 onClick={() => handlePostClick(post.id)}
               >
                 {/* Image */}
@@ -262,7 +262,7 @@ export default function BlogPosts({
             {sidebarPosts.map((post) => (
               <Card
                 key={post.id}
-                className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white"
+                className="mb-6 p-0 m-0 overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white"
                 onClick={() => handlePostClick(post.id)}
               >
                 <div className="relative h-48 overflow-hidden">
@@ -273,7 +273,7 @@ export default function BlogPosts({
                   />
                 </div>
 
-                <CardContent className="p-5">
+                <CardContent className="p-5 ">
                   <Badge
                     variant="default"
                     className={`${getCategoryColor(post.category)} text-white border-none font-medium text-xs px-3 py-1 mb-3`}
