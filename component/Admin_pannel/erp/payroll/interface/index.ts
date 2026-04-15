@@ -141,3 +141,38 @@ export interface PayRollTableRow {
 
   details?: PayrollDetail[]; // optional, in case you need all payroll details
 }
+
+export type PayrollEmployeeInput = {
+  employeeId: number;
+  basicSalary: number;
+  tds: number;
+  medical: number;
+  otherAllowance: number;
+  providentInterest: number;
+  housingAllowance: number;
+};
+
+export type PayrollCreatePayload = {
+  payrollDate: string;
+  month: string;
+  year: number;
+  employees: {
+    employeeId: number | string;
+    basicSalary: number;
+    tds: number;
+    medical: number;
+    otherAllowance: number;
+    providentInterest: number;
+    housingAllowance: number;
+  }[];
+};
+
+export type PayrollUpdatePayload = {
+  payrollDate: string;
+  month: string;
+  year: number;
+  totalAmount: number;
+  totalDeduction: number;
+  totalAllowance: number;
+  employees: PayrollEmployeeInput[];
+};

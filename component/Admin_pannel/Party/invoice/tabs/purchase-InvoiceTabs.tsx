@@ -5,14 +5,10 @@ import { useState } from "react";
 import { useDownloadMou, useSuppliersMutations } from "../../Supplier/tanstack";
 import { useSupplierData } from "../hooks/useSupplierData";
 import { showToast } from "nextjs-toast-notify";
-import SupplierDialog from "../../Supplier/components/supplierDialog";
 import SupplierHeader from "../../Supplier/components/SupplierHeader";
-import { buildSupplierFormData } from "../../Supplier/utils/supplierFormData";
 import InvoiceModal from "../components/InvoiceModal";
 import SupplierTable from "../components/SupplierTable";
 import type { SupplierData } from "../../Supplier/interface";
-
-
 
 export default function PurchaseInvoiceTabs() {
   const [isSupplierFormOpen, setIsSupplierFormOpen] = useState(false);
@@ -47,11 +43,6 @@ export default function PurchaseInvoiceTabs() {
     },
   });
 
-  // ================================
-  // HANDLERS
-  // ================================
-
-
   const handleDeleteSupplier = (row: SupplierData) => {
     if (!row?.supplier_id) return;
     deleteSuppliers(row.supplier_id);
@@ -66,10 +57,6 @@ export default function PurchaseInvoiceTabs() {
     setSelectedRow(row);
     setIsInvoiceOpen(true);
   };
-
-  // ================================
-  // UI
-  // ================================
 
   return (
     <div className="min-h-screen w-full p-6">
@@ -97,8 +84,6 @@ export default function PurchaseInvoiceTabs() {
         onAddPurchase={handleAddPurchase}
         onDeleteSupplier={handleDeleteSupplier}
       />
-
-      {/* INVOICE MODAL */}
       <InvoiceModal
         isOpen={isInvoiceOpen}
         onClose={() => setIsInvoiceOpen(false)}
