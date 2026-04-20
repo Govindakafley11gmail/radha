@@ -78,5 +78,5 @@ export const downloadInvoiceFile = (invoiceId: string) =>
   `${API_RADDHA_URL.rawMaterialReceipt}/download/${invoiceId}`;
 
 export const generateMaterialReceipt = (id:string)=>{
- return `${API_RADDHA_URL.generateReceipt}/${id}`;
+ return `${API_RADDHA_URL.rawMaterialReceipt}/download/${id}`;
 }
