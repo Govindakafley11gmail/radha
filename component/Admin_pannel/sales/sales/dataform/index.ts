@@ -5,19 +5,16 @@ export const TopSaleInvoiceFieldsForms: FieldConfig[] = [
     name: "invoiceNumber",
     label: "Invoice Number",
     type: "text",
-    disabled: true,
   },
   {
     name: "productionDate",
     label: "Invoice Date",
     type: "date",
-    disabled: true,
   },
   {
     name: "dueDate",
     label: "Due Date",
     type: "date",
-    disabled: true,
   },
   {
     name: "totalAmount",

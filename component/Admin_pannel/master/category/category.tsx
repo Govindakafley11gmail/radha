@@ -25,26 +25,30 @@ export default function CategoryComponent() {
   const category = CategoryData?.data || [];
 
   // =================== Mutations ===================
-  const { createCategory, updateCategory, deleteCategory, isLoading: isMutating } =
-    useCategoryMutations({
-      onSuccess: (data) => {
-        showToast.success(data.message, {
-          duration: 5000,
-          position: "top-right",
-          transition: "topBounce",
-        });
-        setIsDialogOpen(false);
-        setEditingRowId(null);
-        setRowValues({});
-      },
-      onError: (error) => {
-        showToast.error(error?.data?.message, {
-          duration: 5000,
-          position: "top-right",
-          transition: "topBounce",
-        });
-      },
-    });
+  const {
+    createCategory,
+    updateCategory,
+    deleteCategory,
+    isLoading: isMutating,
+  } = useCategoryMutations({
+    onSuccess: (data) => {
+      showToast.success(data.message, {
+        duration: 5000,
+        position: "top-right",
+        transition: "topBounce",
+      });
+      setIsDialogOpen(false);
+      setEditingRowId(null);
+      setRowValues({});
+    },
+    onError: (error) => {
+      showToast.error(error?.data?.message, {
+        duration: 5000,
+        position: "top-right",
+        transition: "topBounce",
+      });
+    },
+  });
 
   // =================== Filtered Data ===================
   const filteredData: CategoryData[] = useMemo(() => {
@@ -55,7 +59,7 @@ export default function CategoryComponent() {
     return category.filter(
       (category) =>
         category.name.toLowerCase().includes(query) ||
-        category.description.toLowerCase().includes(query) 
+        category.description.toLowerCase().includes(query),
     );
   }, [category, searchQuery]);
 
@@ -83,7 +87,7 @@ export default function CategoryComponent() {
 
   const handleDelete = (row: CategoryData) => {
     const confirmed = window.confirm(
-      `⚠️ Are you sure you want to delete the branch "${row.name}"?`
+      `⚠️ Are you sure you want to delete the branch "${row.name}"?`,
     );
     if (!confirmed) return;
     deleteCategory(row.id);
@@ -127,15 +131,22 @@ export default function CategoryComponent() {
           row.description
         ),
     },
-   
   ];
 
   // =================== Dynamic Actions ===================
   const getActions = (): ActionConfig<CategoryData>[] => {
     if (editingRowId === null) {
       return [
-        { label: "Edit", icon: <Edit className="h-4 w-4" />, onClick: handleEdit },
-        { label: "Delete", icon: <Delete className="h-4 w-4" />, onClick: handleDelete },
+        {
+          label: "Edit",
+          icon: <Edit className="h-4 w-4" />,
+          onClick: handleEdit,
+        },
+        {
+          label: "Delete",
+          icon: <Delete className="h-4 w-4" />,
+          onClick: handleDelete,
+        },
       ];
     } else {
       return [
@@ -192,8 +203,18 @@ export default function CategoryComponent() {
 
         {editingRowId !== null && (
           <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800 flex items-center justify-between">
-            <span>💡 You are currently editing a branch. Save or cancel to enable other actions.</span>
-            <Button onClick={handleCancel} variant="ghost" size="sm" className="text-blue-800 hover:bg-blue-100">Cancel Editing</Button>
+            <span>
+              💡 You are currently editing a branch. Save or cancel to enable
+              other actions.
+            </span>
+            <Button
+              onClick={handleCancel}
+              variant="ghost"
+              size="sm"
+              className="text-blue-800 hover:bg-blue-100"
+            >
+              Cancel Editing
+            </Button>
           </div>
         )}
 
@@ -206,11 +227,13 @@ export default function CategoryComponent() {
           pageSize={5}
         />
 
-        {Array.isArray(filteredData) && filteredData.length === 0 && searchQuery && (
-          <div className="text-center py-8 text-gray-500">
-            No branches found matching &ldquo;{searchQuery}&ldquo;
-          </div>
-        )}
+        {Array.isArray(filteredData) &&
+          filteredData.length === 0 &&
+          searchQuery && (
+            <div className="text-center py-8 text-gray-500">
+              No branches found matching &ldquo;{searchQuery}&ldquo;
+            </div>
+          )}
       </div>
 
       <CustomDialog
@@ -220,6 +243,7 @@ export default function CategoryComponent() {
         fields={Categoryfields}
         OnSubmitTitle="Create"
         onSubmit={handleCreateSubmit}
+        CustomDialogBoxStyle="grid grid-cols-1 md:grid-cols-2 p-6 gap-4"
       />
     </>
   );

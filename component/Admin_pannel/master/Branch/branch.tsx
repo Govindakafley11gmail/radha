@@ -231,7 +231,7 @@ export default function BranchComponent() {
       </div>
 
       <CustomDialog
-              CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1"
+        CustomDialogBoxStyle="grid grid-cols-1 md:grid-cols-2 p-6 gap-4"
 
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}

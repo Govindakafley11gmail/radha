@@ -35,18 +35,17 @@ const word: Variants = {
 const slides = [
   {
     id: 0,
-    title: "Building Trust, Driving Growth",
-    desc: "Present your business with confidence using a clean, flexible, and fully responsive template that helps you connect with clients and grow.",
+    title: "Raddha Company Forging Strength, Delivering Trust",
+    desc: "We manufacture premium iron nails designed to support strong foundations and lasting structures.",
   },
   {
     id: 1,
-    title: "Empowering Digital Excellence",
-    desc: "Create modern experiences with scalable architecture, smooth animations, and industry-grade UI patterns.",
+    title: "Raddha CompanyCrafting Strength, Supporting Growth",
+    desc: "Delivering durable iron nails that power infrastructure and development.",
   },
 ];
 
 export default function HeroPage() {
-
   const [index, setIndex] = useState(0);
   const currentSlide = slides[index];
   const words = currentSlide.title.split(" ");
@@ -128,7 +127,7 @@ export default function HeroPage() {
       {/* Slider Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/20 p-4 text-3xl text-white backdrop-blur-sm transition hover:bg-white/30"
+        className="absolute left-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center rounded-full bg-white/20 p-4 text-3xl text-white backdrop-blur-sm transition hover:bg-white/30"
         aria-label="Previous slide"
       >
         <motion.span
@@ -141,7 +140,7 @@ export default function HeroPage() {
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/20 p-4 text-3xl text-white backdrop-blur-sm transition hover:bg-white/30"
+        className="absolute right-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center rounded-full bg-white/20 p-4 text-3xl text-white backdrop-blur-sm transition hover:bg-white/30"
         aria-label="Next slide"
       >
         <motion.span

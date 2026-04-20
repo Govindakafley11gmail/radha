@@ -60,7 +60,7 @@ export const menuContent: Record<string, React.ReactNode> = {
   Department: <DepartmentComponent />,
   "Account Group": <AccountGroupComponent />,
   "Account Type": <AccountTypeComponent />,
-  Category: <CategoryComponent />,
+  Categories: <CategoryComponent />,
   "Raw-Materials": <RawMaterialComponent />,
   Webhooks: <DepartmentComponent />,
   "Purchase Invoice": <PurchaseInvoiceComponent />,
@@ -90,7 +90,7 @@ export const menuContent: Record<string, React.ReactNode> = {
   "Raw Material Inventory": <RawMaterialInventoryComponent />,
   "WIP Inventory Component": <WIPInventoryComponent />,
   //Account Costing
-  Categories: <RawMaterialComponent />,
+  "Raw Material Categories": <RawMaterialComponent />,
   //Assets  "Fixed Assets": <div className="text-7xl font-bold">Fixed Assets</div>,
   "Fixed Assets": <FixedAssetsComponent />,
 };

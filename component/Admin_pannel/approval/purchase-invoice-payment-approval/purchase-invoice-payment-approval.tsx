@@ -93,12 +93,18 @@ export default function PurchaseInvoicePaymentApproval() {
       header: "Email",
       render: (_, row) => row.supplier?.email || "-",
     },
-    {
-      header: "Total",
-      render: (_, row) =>
-        row.purchaseInvoice?.purchaseInvoiceDetails?.map((item) => item.total) ||
-        "-",
-    },
+   {
+  header: "Total",
+  render: (_, row) => {
+    const details = row.purchaseInvoice?.purchaseInvoiceDetails;
+
+    if (!details?.length) return "-";
+
+    const total = details.reduce((acc, item) => acc + parseFloat(item.total ?? 0), 0);
+
+    return total;
+  },
+},
   ];
   const { mutate: downloadMou, isPending: isDownloading } = useDownloadFile();
 

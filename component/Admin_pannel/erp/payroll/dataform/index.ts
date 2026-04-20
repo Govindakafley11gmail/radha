@@ -14,17 +14,6 @@ const months = [
   { label: "November", value: "november" },
   { label: "December", value: "december" },
 ];
-const currentYear = new Date().getFullYear();
-
-const years = Array.from({ length: 10 }, (_, i) => {
-  const year = currentYear - i;
-
-  return {
-    label: year.toString(),
-    value: year.toString(),
-  };
-});
-import { NextResponse } from "next/server";
 
 export const TopPayrollForms: FieldConfig[] = [
   {
@@ -45,7 +34,7 @@ export const TopPayrollForms: FieldConfig[] = [
     label: "Year",
     type: "year",
     minYear: 1980,
-    maxYear: 2025,
+    maxYear: 2040,
     validation: Yup.number().required("Required"),
   },
   {

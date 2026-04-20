@@ -33,17 +33,12 @@ export default function Sidebar({
   setActiveMenuItem,
 }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<string[]>([
+  const [expandedSection, setExpandedSection] = useState<string | null>(
     "Dashboard",
-    "Sales",
-  ]);
+  );
 
   const toggleSection = (section: string) => {
-    setExpandedSections((prev) =>
-      prev.includes(section)
-        ? prev.filter((s) => s !== section)
-        : [...prev, section],
-    );
+    setExpandedSection((prev) => (prev === section ? null : section));
   };
 
   // Define sidebar structure similar to the image
@@ -114,7 +109,7 @@ export default function Sidebar({
             setActiveMenuItem("Sales Receipt");
           },
         },
-          {
+        {
           label: "Discount Scheme",
           onClick: () => {
             setActiveApp("Sales");
@@ -129,18 +124,25 @@ export default function Sidebar({
       icon: Receipt,
       hasSubmenu: true,
       subItems: [
-         {
+        {
           label: "Branch",
           onClick: () => {
             setActiveApp("Master");
             setActiveMenuItem("Branch");
           },
         },
-          {
+        {
           label: "Department",
           onClick: () => {
             setActiveApp("Master");
             setActiveMenuItem("Department");
+          },
+        },
+        {
+          label: "Raw Material Categories",
+          onClick: () => {
+            setActiveApp("Master");
+            setActiveMenuItem("Raw Material Categories");
           },
         },
         {
@@ -166,14 +168,13 @@ export default function Sidebar({
         },
       ],
     },
-  
+
     {
       id: "Accounts Payable",
       label: "Accounts Payable",
       icon: FileText,
       hasSubmenu: true,
       subItems: [
-    
         {
           label: "Purchase Invoice",
           onClick: () => {
@@ -203,7 +204,7 @@ export default function Sidebar({
             setActiveMenuItem("Purchase Invoice Payment");
           },
         },
-            {
+        {
           label: "Fixed Assets Payment",
           onClick: () => {
             setActiveApp("Payments");
@@ -240,6 +241,13 @@ export default function Sidebar({
             setActiveMenuItem("Labour");
           },
         },
+         {
+          label: "Labour Cost",
+          onClick: () => {
+            setActiveApp("Production Batch");
+            setActiveMenuItem("Labour Cost");
+          },
+        },
         {
           label: "Product Unit Cost",
           onClick: () => {
@@ -247,7 +255,7 @@ export default function Sidebar({
             setActiveMenuItem("Product Unit Cost"); // ✅ FIXED
           },
         },
-         {
+        {
           label: "Other Production Cost",
           onClick: () => {
             setActiveApp("Production Batch");
@@ -269,7 +277,7 @@ export default function Sidebar({
             setActiveMenuItem("Raw Material Inventory");
           },
         },
-            {
+        {
           label: "WIP Inventory Component",
           onClick: () => {
             setActiveApp("Inventory Management");
@@ -305,7 +313,7 @@ export default function Sidebar({
             setActiveMenuItem("Leave Encashment");
           },
         },
-            {
+        {
           label: "Payroll",
           onClick: () => {
             setActiveApp("ERP");
@@ -327,7 +335,7 @@ export default function Sidebar({
             setActiveMenuItem("Purchase Approval");
           },
         },
-          {
+        {
           label: "Fixed Assets approval",
           onClick: () => {
             setActiveApp("Approval");
@@ -336,7 +344,7 @@ export default function Sidebar({
         },
       ],
     },
-        {
+    {
       id: "Assets",
       label: "Assets",
       icon: Workflow,
@@ -400,8 +408,7 @@ export default function Sidebar({
       <nav className="flex-1 overflow-y-auto py-4">
         {sidebarStructure.map((section) => {
           const Icon = section.icon;
-          const isExpanded = expandedSections.includes(section.id);
-          // const isSectionActive = section.subItems?.some(
+          const isExpanded = expandedSection === section.id; // const isSectionActive = section.subItems?.some(
           //   (item) => item.label === activeMenuItem,
           // );
           const isDirectActive =

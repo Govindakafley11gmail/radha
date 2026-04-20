@@ -5,6 +5,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Package } from "lucide-react";
 import FixedAssetsPaymentComponentTab from "./Tabs/fixed-assets-payment/Fixed-assets-payment";
+import OtherComponentTab from "../purchase_invoice_payments/tabs/payment-settlement-tabs";
 
 export default function FixedAssetsPaymentComponent() {
   
@@ -35,15 +36,12 @@ export default function FixedAssetsPaymentComponent() {
             </TabsTrigger>
           </TabsList>
 
-          {/* First Tab - Purchase Invoices */}
           <TabsContent value="invoices" className="space-y-4 mt-6">
             <FixedAssetsPaymentComponentTab />
           </TabsContent>
 
-          {/* Second Tab - Other Component */}
           <TabsContent value="other" className="mt-6">
-            {/* <OtherComponentTab /> */}
-            {/* Or directly import and use: <YourOtherComponent /> */}
+            <OtherComponentTab />
           </TabsContent>
         </Tabs>
       </div>

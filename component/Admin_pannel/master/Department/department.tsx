@@ -127,7 +127,7 @@ export default function DepartmentComponent() {
     },
     {
       header: "Branch Options",
-      render: (_, row) => row.branch.id, // show branch name
+      render: (_, row) => row.branch.name, // show branch name
     },
   ];
   const dialogDefaultValues = useMemo(() => {
@@ -268,7 +268,7 @@ export default function DepartmentComponent() {
         defaultValues={dialogDefaultValues}
         onSubmit={handleCreateSubmit}
         OnSubmitTitle={editingAccountType ? "Update" : "Create"}
-                      CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1"
+        CustomDialogBoxStyle="grid grid-cols-1 md:grid-cols-3 p-6 gap-4"
 
       />
     </>

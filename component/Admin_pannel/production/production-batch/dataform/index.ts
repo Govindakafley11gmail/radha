@@ -12,14 +12,5 @@ export const TopProductionBatchFieldsForms: FieldConfig[] = [
     label: "Quantity Produced",
     type: "number", // ← new field
    
-  },
-  {
-    name: "productType",
-    label: "Product Type",
-    type: "select", // ← new field
-   options:[
-    {label:"Chocolate",value:"Chocolate"},
-    {label:"other",value:"other"}
-   ]
-  },
+  }
 ];

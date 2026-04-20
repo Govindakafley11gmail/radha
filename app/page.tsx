@@ -73,9 +73,9 @@ export default function HomeHero() {
           { value: 345, label: 'PROJECTS', position: 'top-right', bgColor: 'bg-orange-500', textColor: 'text-white' },
           { value: 12, label: 'YEARS OF EXPERIENCE', position: 'bottom-left' },
         ]}
-        heading="Vestibulum Sagittis Lacinia Augue"
+        heading="Driving Growth in the Metal Manufacturing Sector"
         subHeading="ABOUT"
-        description="Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna."
+        description="Raddha Company is a manufacturing firm specializing in the production of metal construction materials. The company focuses on delivering high-quality products used in infrastructure, construction, and industrial applications."
         features={[
           { icon: '🚀', title: 'Pellentesque Dapibus', desc: 'Aenean vulputate eleifend tellus.' },
           { icon: '🌐', title: 'Suspendisse Pulvinar', desc: 'Maecenas tempus, tellus eget condimentum rhoncus.' },

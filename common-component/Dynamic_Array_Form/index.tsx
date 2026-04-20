@@ -25,7 +25,7 @@ export type FieldType =
   | "file"
   | "image"
   | "textarea"
-  | "year"
+  | "year";
 
 export interface FieldConfig {
   name: string;
@@ -54,6 +54,7 @@ interface DynamicArrayFormProps {
   onSubmit: (values: Record<string, any>) => void;
   buttonTitle: string;
   topContainerClassName?: string;
+  ItemTitle?: string;
 }
 
 // ─────────────────────────────────────────────
@@ -71,7 +72,7 @@ interface FormikSelectFieldProps {
   options: { label: string; value: any }[];
   storeLabel?: boolean;
   placeholder?: string;
-  disabled?:boolean
+  disabled?: boolean;
 }
 function ComboboxField({
   name,
@@ -93,8 +94,10 @@ function ComboboxField({
 
   // Sync display when value is set externally (e.g. initialValues)
   const currentLabel = React.useMemo(
-    () => options.find((o) => String(o.value) === String(currentValue))?.label ?? "",
-    [currentValue, options]
+    () =>
+      options.find((o) => String(o.value) === String(currentValue))?.label ??
+      "",
+    [currentValue, options],
   );
 
   const [inputDisplay, setInputDisplay] = React.useState(currentLabel);
@@ -107,7 +110,7 @@ function ComboboxField({
   const filtered = React.useMemo(() => {
     if (!query) return options;
     return options.filter((o) =>
-      o.label.toLowerCase().includes(query.toLowerCase())
+      o.label.toLowerCase().includes(query.toLowerCase()),
     );
   }, [query, options]);
 
@@ -168,14 +171,34 @@ function ComboboxField({
             onClick={handleClear}
             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         ) : (
           <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </span>
         )}
@@ -235,7 +258,7 @@ function YearSelectField({
 }) {
   const years = Array.from(
     { length: maxYear - minYear + 1 },
-    (_, i) => maxYear - i
+    (_, i) => maxYear - i,
   ).map((y) => ({ label: String(y), value: y }));
 
   return (
@@ -270,7 +293,7 @@ function ItemsTotalWatcher({
         if (field.calc.multiply) {
           const product = field.calc.multiply.reduce(
             (acc, key) => acc * (Number(item[key]) || 0),
-            1
+            1,
           );
           if (item[field.name] !== product)
             setFieldValue(`${arrayFieldName}.${index}.${field.name}`, product);
@@ -279,7 +302,7 @@ function ItemsTotalWatcher({
         if (field.calc.sum) {
           const sum = field.calc.sum.reduce(
             (acc, key) => acc + (Number(item[key]) || 0),
-            0
+            0,
           );
           if (item[field.name] !== sum)
             setFieldValue(`${arrayFieldName}.${index}.${field.name}`, sum);
@@ -291,7 +314,7 @@ function ItemsTotalWatcher({
           if (item[field.name] !== percentValue)
             setFieldValue(
               `${arrayFieldName}.${index}.${field.name}`,
-              percentValue
+              percentValue,
             );
         }
       });
@@ -302,7 +325,7 @@ function ItemsTotalWatcher({
       const total = values[arrayFieldName].reduce((acc: number, item: any) => {
         const rowSum = field.calc!.sum!.reduce(
           (rowAcc, key) => rowAcc + (Number(item[key]) || 0),
-          0
+          0,
         );
         return acc + rowSum;
       }, 0);
@@ -332,7 +355,10 @@ function DateDiffWatcher() {
       setFieldValue("total_days", 0);
       return;
     }
-    if (end < start) { setFieldValue("total_days", 0); return; }
+    if (end < start) {
+      setFieldValue("total_days", 0);
+      return;
+    }
 
     const diffDays =
       Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
@@ -453,8 +479,7 @@ function ModernTextarea({ name }: { name: string }) {
   const pct = Math.round((value.length / MAX) * 100);
   const circumference = 2 * Math.PI * 7; // r=7
   const dash = (pct / 100) * circumference;
-  const ringColor =
-    pct >= 90 ? "#ef4444" : pct >= 70 ? "#f97316" : "#22c55e";
+  const ringColor = pct >= 90 ? "#ef4444" : pct >= 70 ? "#f97316" : "#22c55e";
 
   return (
     <div className="group relative">
@@ -488,31 +513,42 @@ function ModernTextarea({ name }: { name: string }) {
               pct >= 90
                 ? "bg-red-50 text-red-500"
                 : pct >= 70
-                ? "bg-orange-50 text-orange-500"
-                : "bg-gray-100 text-gray-400"
+                  ? "bg-orange-50 text-orange-500"
+                  : "bg-gray-100 text-gray-400"
             }`}
           >
             {MAX - value.length} left
           </span>
 
           {/* SVG ring progress */}
-          <svg width="20" height="20" viewBox="0 0 20 20" className="-rotate-90">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            className="-rotate-90"
+          >
             {/* Track */}
             <circle
-              cx="10" cy="10" r="7"
+              cx="10"
+              cy="10"
+              r="7"
               fill="none"
               stroke="#e5e7eb"
               strokeWidth="2.5"
             />
             {/* Progress */}
             <circle
-              cx="10" cy="10" r="7"
+              cx="10"
+              cy="10"
+              r="7"
               fill="none"
               stroke={ringColor}
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeDasharray={`${dash} ${circumference}`}
-              style={{ transition: "stroke-dasharray 0.3s ease, stroke 0.3s ease" }}
+              style={{
+                transition: "stroke-dasharray 0.3s ease, stroke 0.3s ease",
+              }}
             />
           </svg>
         </div>
@@ -550,7 +586,8 @@ function RenderField({
   if (field.type === "textarea") {
     return <ModernTextarea name={fieldName} />;
   }
-   if (field.type === "year") { // ✅ added
+  if (field.type === "year") {
+    // ✅ added
     return (
       <>
         <YearSelectField
@@ -606,20 +643,22 @@ export default function DynamicArrayForm({
   onSubmit,
   onValuesChange,
   topContainerClassName,
+  ItemTitle,
 }: DynamicArrayFormProps) {
   const arrayFieldKey = arrayFieldName;
 
   const topFieldDefaults = topFields.reduce(
     (acc, field) => {
-      acc[field.name] = initialValues[field.name] ?? getDefaultValue(field.type);
+      acc[field.name] =
+        initialValues[field.name] ?? getDefaultValue(field.type);
       return acc;
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   );
 
   const arrayItemDefaults = arrayFields.reduce(
     (acc, f) => ({ ...acc, [f.name]: getDefaultValue(f.type) }),
-    {}
+    {},
   );
 
   const initialArray = arrayFields.length > 0 ? [arrayItemDefaults] : [];
@@ -641,20 +680,30 @@ export default function DynamicArrayForm({
   };
 
   const validationSchema = useMemo(() => {
-    const topFieldSchema = topFields.reduce((acc, f) => {
-      if (f.validation) acc[f.name] = f.validation;
-      return acc;
-    }, {} as Record<string, any>);
+    const topFieldSchema = topFields.reduce(
+      (acc, f) => {
+        if (f.validation) acc[f.name] = f.validation;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
 
-    const arrayFieldSchema = arrayFields.reduce((acc, f) => {
-      if (f.validation) acc[f.name] = f.validation;
-      return acc;
-    }, {} as Record<string, any>);
+    const arrayFieldSchema = arrayFields.reduce(
+      (acc, f) => {
+        if (f.validation) acc[f.name] = f.validation;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
 
     return Yup.object().shape({
       ...topFieldSchema,
       ...(arrayFieldKey
-        ? { [arrayFieldKey]: Yup.array().of(Yup.object().shape(arrayFieldSchema)) }
+        ? {
+            [arrayFieldKey]: Yup.array().of(
+              Yup.object().shape(arrayFieldSchema),
+            ),
+          }
         : {}),
     });
   }, [topFields, arrayFields, arrayFieldKey]);
@@ -704,14 +753,11 @@ export default function DynamicArrayForm({
                 {({ push, remove }) => (
                   <div className="space-y-4">
                     <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-                      Items
+                      {ItemTitle ? ItemTitle : "Item"}{" "}
                     </h3>
 
                     {values[arrayFieldKey].map((_: any, index: number) => (
-                      <div
-                        key={index}
-                        className={topContainerClassName }
-                      >
+                      <div key={index} className={topContainerClassName}>
                         {arrayFields.map((field) => (
                           <div key={field.name}>
                             <FieldLabel label={field.label} />

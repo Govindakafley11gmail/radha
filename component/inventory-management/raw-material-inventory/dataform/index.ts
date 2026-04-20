@@ -1,7 +1,7 @@
 // machine-cost-fields.ts
 import { FieldConfig } from "@/common-component/customDialogbox";
 import * as Yup from "yup";
-const   ValuationMethodOptions = [
+const ValuationMethodOptions = [
   { label: "FIFO", value: "FIFO" },
   { label: "LIFO", value: "LIFO" },
   { label: "WAC", value: "WAC" },
@@ -24,27 +24,21 @@ export const RawMaterialInventoryFields = (
     type: "number",
     validation: Yup.number().min(1, "Quantity on hand must be at least 1"),
   },
-   {
+  {
     name: "value",
     label: "value",
     type: "number",
     validation: Yup.number().min(1, "value must be at least 1"),
   },
-    {
-    name: "value",
-    label: "value",
-    type: "number",
-    validation: Yup.number().min(1, "value must be at least 1"),
-  },
-   {
+  {
     name: "valuation_method",
     label: "Valuation Method",
     type: "select",
     options: ValuationMethodOptions,
     validation: Yup.string().required("Valuation Method is required"),
   },
-  
-    {
+
+  {
     name: "reorder_level",
     label: "Reorder Level",
     type: "number",

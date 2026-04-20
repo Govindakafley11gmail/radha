@@ -29,7 +29,7 @@ export default function ProductionBatchComponent() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<ProductionBatchData | null>(
-    null
+    null,
   );
   //getData
   const { data: ProductionBatch, isLoading: isProductionBatchLoading } =
@@ -71,7 +71,7 @@ export default function ProductionBatchComponent() {
     return ProductionBatchGetData.filter(
       (ProductionBatchData) =>
         ProductionBatchData.productType.toLowerCase().includes(query) ||
-        ProductionBatchData.batchNumber.toLowerCase().includes(query)
+        ProductionBatchData.batchNumber.toLowerCase().includes(query),
     );
   }, [ProductionBatchGetData, searchQuery]);
   // Get Raw Materials Data
@@ -102,7 +102,7 @@ export default function ProductionBatchComponent() {
         validation: Yup.number().min(0, "Min 0").required("Required"),
       },
     ],
-    [productTypeOptions]
+    [productTypeOptions],
   );
 
   const columns: Column<ProductionBatchData>[] = [
@@ -147,7 +147,7 @@ export default function ProductionBatchComponent() {
   // Delete function
   const handleDelete = (row: ProductionBatchData) => {
     const confirmed = window.confirm(
-      `⚠️ Are you sure you want to delete the role "${row.productType}"? This action cannot be undone.`
+      `⚠️ Are you sure you want to delete the role "${row.productType}"? This action cannot be undone.`,
     );
 
     if (!confirmed) return;
@@ -243,6 +243,7 @@ export default function ProductionBatchComponent() {
           onClose={() => setIsModalOpen(false)}
         >
           <DynamicArrayForm
+            topContainerClassName="grid grid-cols-2 md:grid-cols-2 gap-x-4 gap-y-4 p-4 rounded-xl border border-gray-200 bg-gray-50/50"
             key={selectedRow?.id || "create"}
             title="Production Batch Form"
             arrayFieldName="rawMaterialCosts"
@@ -252,7 +253,7 @@ export default function ProductionBatchComponent() {
               productionDate: selectedRow?.productionDate || "",
               quantityProduced: selectedRow?.quantityProduced || "",
               rawMaterialCosts: normalizeRawMaterialCosts(
-                selectedRow?.rawMaterialCosts
+                selectedRow?.rawMaterialCosts,
               ),
             }}
             arrayFields={dynamicBottomProductionBatchForm}

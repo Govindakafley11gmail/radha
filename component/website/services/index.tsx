@@ -25,17 +25,17 @@ const ServicesSection = () => {
       <div className="absolute -top-16 -left-16 w-40 h-40 bg-orange-50 rounded-full opacity-60 animate-pulse-slow -z-10"></div>
       <div className="absolute bottom-0 right-10 w-32 h-32 bg-orange-100 rounded-full opacity-50 animate-pulse-slow -z-10"></div>
 
-      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-12">
+      <div className="container mx-auto px-4 flex flex-col justify-center items-center lg:flex-row items-center gap-12">
         {/* Text Content */}
         <motion.div
-          className="flex-1"
+          className="flex flex-1 flex-col justify-around items-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={containerVariants}
         >
           <motion.span
-            className="text-orange-500 font-semibold text-sm uppercase bg-orange-100 px-3 py-1 rounded"
+            className="text-orange-500 self-start md:ml-26 font-semibold text-sm uppercase px-4 py-1 bg-orange-100 rounded"
             variants={fadeUp}
           >
             Professional Services
@@ -45,26 +45,17 @@ const ServicesSection = () => {
             className="mt-4 text-3xl lg:text-4xl font-bold text-gray-900 leading-snug"
             variants={fadeUp}
           >
-            Elevating Business Performance Through Strategic Solutions
+            Elevating Business Performance <br /> Through Strategic Solutions
           </motion.h2>
 
           <motion.p
-            className="mt-4 text-gray-600 max-w-lg"
+            className="mt-4 text-gray-600 max-w-lg w-full"
             variants={fadeUp}
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
             varius risus sed pellentesque auctor. Phasellus gravida magna at
             tortor cursus, sit amet suscipit tortor malesuada.
           </motion.p>
-
-          <motion.button
-            className="mt-6 px-6 py-3 bg-orange-500 text-white font-medium rounded hover:bg-orange-600 transition"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            variants={fadeUp}
-          >
-            Request a Consultation →
-          </motion.button>
         </motion.div>
 
         {/* Image Content */}
@@ -85,7 +76,7 @@ const ServicesSection = () => {
             alt="Professional Service"
             width={600}
             height={400}
-            className="rounded-lg shadow-lg"
+            className="rounded-lg shadow-lg w-1h-auto"
             priority
           />
         </motion.div>

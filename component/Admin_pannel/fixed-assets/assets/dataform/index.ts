@@ -11,7 +11,7 @@ export const FixedAssetsFields: PermssionForm[] = [
     validation: Yup.string().required("Asset Name is required"),
     Icon: RollerCoaster,
   },
-    {
+  {
     name: "assetCode",
     label: "Asset Code",
     type: "text",
@@ -24,7 +24,9 @@ export const FixedAssetsFields: PermssionForm[] = [
     label: "Purchase Cost",
     type: "number",
     placeholder: "Enter Purchase Cost",
-    validation: Yup.number().required("Purchase Cost is required").positive("Purchase Cost must be a positive number"),
+    validation: Yup.number()
+      .required("Purchase Cost is required")
+      .positive("Purchase Cost must be a positive number"),
     Icon: Dessert,
   },
   {
@@ -35,13 +37,14 @@ export const FixedAssetsFields: PermssionForm[] = [
     validation: Yup.date().required("Purchase Date is required"),
     Icon: Dessert,
   },
-  {
-    name: "gst",
-    label: "GST",
-    type: "number",
-    placeholder: "Enter GST",
-    validation: Yup.number().required("GST is required").positive("GST must be a positive number"),
-    Icon: Dessert,
+ {
+  name: "gst",
+  label: "GST (5%)",
+  type: "number",
+  disabled: true,
+  calculation: {
+    dependsOn: "purchaseCost",
+    formula: (val) => val * 0.05,
   },
-
+}
 ];

@@ -287,7 +287,7 @@ export default function RawMaterialComponent() {
         defaultValues={dialogDefaultValues}
         onSubmit={handleCreateSubmit}
         OnSubmitTitle={editingAccountType ? "Update" : "Create"}
-        CustomDialogBoxStyle="px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1"
+        CustomDialogBoxStyle="px-8 py-6 grid grid-cols-2 md:grid-cols-3 gap-5 overflow-y-auto flex-1"
       />
     </>
   );

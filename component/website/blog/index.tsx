@@ -257,8 +257,8 @@ export default function BlogPosts({
           </div>
 
           {/* Sidebar - Right Side */}
-          <aside className="space-y-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Popular Posts</h3>
+          <aside className="space-y-4 flex  flex-col  gap-2">
+            <h3 className="text-xl font-bold text-gray-900">Popular Posts</h3>
             {sidebarPosts.map((post) => (
               <Card
                 key={post.id}
@@ -273,7 +273,7 @@ export default function BlogPosts({
                   />
                 </div>
 
-                <CardContent className="p-5 ">
+                <CardContent className="p-5  ">
                   <Badge
                     variant="default"
                     className={`${getCategoryColor(post.category)} text-white border-none font-medium text-xs px-3 py-1 mb-3`}
