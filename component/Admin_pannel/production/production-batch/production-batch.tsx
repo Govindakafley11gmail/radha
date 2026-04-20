@@ -249,7 +249,6 @@ export default function ProductionBatchComponent() {
             arrayFieldName="rawMaterialCosts"
             topFields={TopProductionBatchFieldsForms}
             initialValues={{
-              productType: selectedRow?.productType || "",
               productionDate: selectedRow?.productionDate || "",
               quantityProduced: selectedRow?.quantityProduced || "",
               rawMaterialCosts: normalizeRawMaterialCosts(

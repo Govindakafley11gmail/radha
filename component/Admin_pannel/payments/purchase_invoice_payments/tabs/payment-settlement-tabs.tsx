@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "@/common-component/duplicateCustomdialog";
-import { Delete, Edit, File, Search, View } from "lucide-react";
+import { Download, Search, View } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { ActionConfig, Column, DataTable } from "@/component/table";
 
 import { useDownloadFile } from "@/component/download-tanstack/download-tanstack";
-import { useGetPurchaseInvoicePaymentSettlement } from "../tanstack-function";
+import { downloadDocumnetPath, downloadVoucher, useGetPurchaseInvoicePaymentSettlement } from "../tanstack-function";
 import { PaymentSettlementInvoiceDataAttributes } from "../interface";
 
 export default function OtherComponentTab() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -64,18 +63,28 @@ export default function OtherComponentTab() {
 
  
   ];
-  const generateReceipt = (row: PaymentSettlementInvoiceDataAttributes) => {
-    setIsDialogOpen(true);
+  const generatePaymentVoucher = (row: PaymentSettlementInvoiceDataAttributes) => {
+    downloadMou(downloadVoucher(row.id))
   };
+   const generateMOU = (row: PaymentSettlementInvoiceDataAttributes) => {
+    downloadMou(downloadDocumnetPath(row.rawMaterialReceipt.id))
+  };
+
 
   //Dynamic Button
   const getActions = (): ActionConfig<PaymentSettlementInvoiceDataAttributes>[] => {
     return [
       {
-        label: "View",
-        icon: <View className="h-4 w-4" />,
-        onClick: generateReceipt,
-        title: "View Details",
+        label: "Voucher",
+        icon: <Download className="h-4 w-4" />,
+        onClick: generatePaymentVoucher,
+        title: "Generate Voucher",
+      },
+      {
+        label: "Generate Receipt",
+        icon: <Download className="h-4 w-4" />,
+        onClick: generateMOU,
+        title: "Generate Mou",
       },
     ];
   };
@@ -96,12 +105,6 @@ export default function OtherComponentTab() {
             className="w-full pl-10 h-12 rounded-md border-slate-200 bg-white text-sm text-gray-900 shadow-lg focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-transparent"
           />
         </div>
-        {/* <Button
-          onClick={() => setIsDialogOpen(true)}
-          className="bg-orange-500 text-white hover:bg-orange-600 h-12 px-6 rounded-md shadow-md"
-        >
-          Create
-        </Button> */}
       </div>
       <DataTable
         data={filteredData}

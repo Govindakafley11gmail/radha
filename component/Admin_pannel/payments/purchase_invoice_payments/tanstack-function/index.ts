@@ -22,13 +22,11 @@ const getPurchaseInvoicePayment =
 
 export const useGetPurchaseInvoicePayment = () => {
   return useQuery<PurchaseInvoicePaymentGetResponse, errorResponse>({
-  queryKey: ["purchase-invoice-payment"], // ✅ change this
+    queryKey: ["purchase-invoice-payment"], // ✅ change this
     queryFn: getPurchaseInvoicePayment,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
-
-
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface MutationOptions {
@@ -57,8 +55,10 @@ export const usePaymnetMutations = (options?: MutationOptions) => {
     PaymentRecieptSendData
   >({
     mutationFn: createPayment,
-    onSuccess: async(data) => {
-      await queryClient.invalidateQueries({ queryKey: ["purchase-invoice-payment"] });
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["purchase-invoice-payment"],
+      });
       options?.onSuccess?.(data);
     },
     onError: (error) => {
@@ -72,11 +72,10 @@ export const usePaymnetMutations = (options?: MutationOptions) => {
   };
 };
 
-
 const getPurchaseInvoicePaymentSettlement =
   async (): Promise<PaymentSettlementGetResponse> => {
     const response = await apiClient.get(API_RADDHA_URL.paymentSettlement);
-      console.log("Response response",response)
+    console.log("Response response", response);
     if (response.data?.success === false) {
       throw { data: response.data };
     }
@@ -91,3 +90,8 @@ export const useGetPurchaseInvoicePaymentSettlement = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
+
+export const downloadVoucher = (paymentId: string) =>
+  `${API_RADDHA_URL.payment}/download-voucher/${paymentId}`;
+export const downloadDocumnetPath = (rawMaterId: string) => 
+  `${API_RADDHA_URL.rawMaterialReceipt}/download/${rawMaterId}`;

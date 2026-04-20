@@ -21,6 +21,7 @@ const API_RADDHA_URL = {
   supplier: `${Raddha_Backend_API}/supplier`,
   purchaseInvoice: `${Raddha_Backend_API}/purchase-invoice`,
   rawMaterialReceipt: `${Raddha_Backend_API}/raw-material-receipt`,
+  generateReceipt: `${Raddha_Backend_API}/payment/download`,
   payment: `${Raddha_Backend_API}/payment`,
   paymentSettlement: `${Raddha_Backend_API}/payment/settled`,
   //Fixed Assets Payment

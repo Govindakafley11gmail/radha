@@ -2,10 +2,7 @@ import { ProductionBatchInputFormvalues } from "../interface";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
   export const normalizePayload = (values: any): ProductionBatchInputFormvalues => ({
-  productType:
-    typeof values.productType === "string"
-      ? values.productType
-      : values.productType?.label ?? "",
+
 
   productionDate: values.productionDate,
   quantityProduced: Number(values.quantityProduced),

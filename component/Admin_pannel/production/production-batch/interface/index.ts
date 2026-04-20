@@ -5,7 +5,6 @@ export interface rawMaterialCosts {
 }
 export interface ProductionBatchInputFormvalues {
   productionDate: string;
-  productType: string;
   quantityProduced: number;
   rawMaterialCosts: rawMaterialCosts;
 }

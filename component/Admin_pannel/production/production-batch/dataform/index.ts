@@ -6,11 +6,11 @@ export const TopProductionBatchFieldsForms: FieldConfig[] = [
     label: "Production Date",
     type: "date",
   },
- 
+
   {
     name: "quantityProduced",
     label: "Quantity Produced",
     type: "number", // ← new field
-   
-  }
+    calc: { sum: ["usedQuantity"] },
+  },
 ];
